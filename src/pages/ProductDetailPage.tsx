@@ -19,7 +19,6 @@ import {
   getEstimatedDelivery,
 } from '../utils/formatters';
 import { useCartStore } from '../store/useCartStore';
-import { useUserStore } from '../store/useUserStore';
 import { ReviewSummary } from '../components/product';
 
 const products = productsData as unknown as Product[];
@@ -31,7 +30,6 @@ interface ProductViewProps {
 const ProductView: React.FC<ProductViewProps> = ({ product }) => {
   const navigate = useNavigate();
   const addToCart = useCartStore((state) => state.addToCart);
-  const user = useUserStore((state) => state.user);
 
   const [selectedImage, setSelectedImage] = useState<string>(
     product.thumbnail || (product.images && product.images[0]) || ''
@@ -50,11 +48,7 @@ const ProductView: React.FC<ProductViewProps> = ({ product }) => {
 
   const handleBuyNow = () => {
     addToCart(product, selectedQuantity);
-    if (!user) {
-      navigate('/login', { state: { from: '/checkout' } });
-    } else {
-      navigate('/checkout');
-    }
+    navigate('/checkout');
   };
 
   const renderStars = (rating: number) => {

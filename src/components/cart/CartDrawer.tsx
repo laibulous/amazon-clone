@@ -10,7 +10,6 @@ import {
   Lock,
 } from 'lucide-react';
 import { useCartStore } from '../../store/useCartStore';
-import { useUserStore } from '../../store/useUserStore';
 import { formatCurrency } from '../../utils/formatters';
 
 export interface CartDrawerProps {
@@ -30,7 +29,6 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   const removeFromCart = useCartStore((state) => state.removeFromCart);
   const clearCart = useCartStore((state) => state.clearCart);
   const getSummary = useCartStore((state) => state.getSummary);
-  const user = useUserStore((state) => state.user);
 
   const isOpen = propIsOpen !== undefined ? propIsOpen : storeIsOpen;
   const handleClose = propOnClose || closeCart;
@@ -68,11 +66,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
 
   const handleProceedToCheckout = () => {
     handleClose();
-    if (!user) {
-      navigate('/login', { state: { from: '/checkout' } });
-    } else {
-      navigate('/checkout');
-    }
+    navigate('/checkout');
   };
 
   return (

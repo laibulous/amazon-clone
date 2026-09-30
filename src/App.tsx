@@ -16,7 +16,7 @@ function AppContent() {
   };
 
   return (
-    <div className="min-h-screen bg-[#eaeded] text-[#0f1111] flex flex-col font-sans">
+    <div className="min-h-screen bg-white text-gray-900 flex flex-col font-sans antialiased">
       {/* 
         Modernized Minimalist Header:
         - Clean translucent glassmorphism background

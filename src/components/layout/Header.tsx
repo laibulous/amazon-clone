@@ -1,9 +1,8 @@
 import React, { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, ShoppingCart, User as UserIcon } from 'lucide-react';
+import { Search, ShoppingCart } from 'lucide-react';
 import { useCartStore } from '../../store/useCartStore';
 import { useFilterStore } from '../../store/useFilterStore';
-import { useUserStore } from '../../store/useUserStore';
 
 export interface HeaderProps {
   cartCount?: number;
@@ -11,7 +10,6 @@ export interface HeaderProps {
   searchQuery?: string;
   onSearchChange?: (query: string) => void;
   onSearchSubmit?: (e: React.FormEvent) => void;
-  // Optional for backward compatibility:
   deliveryLocation?: string;
   categories?: string[];
   selectedCategory?: string;
@@ -36,11 +34,6 @@ export const Header: React.FC<HeaderProps> = ({
   const storeQuery = useFilterStore((state) => state.searchQuery);
   const storeSetSearchQuery = useFilterStore((state) => state.setSearchQuery);
   const activeQuery = searchQuery !== undefined ? searchQuery : storeQuery;
-
-  // User auth store
-  const user = useUserStore((state) => state.user);
-  const login = useUserStore((state) => state.login);
-  const logout = useUserStore((state) => state.logout);
 
   // Focus search input when user presses ⌘K or Ctrl+K
   useEffect(() => {
@@ -75,10 +68,6 @@ export const Header: React.FC<HeaderProps> = ({
     if (onSearchSubmit) {
       onSearchSubmit(e);
     }
-  };
-
-  const handleSignInClick = () => {
-    login({ name: 'Laiba', isPrimeMember: true });
   };
 
   return (
@@ -127,36 +116,8 @@ export const Header: React.FC<HeaderProps> = ({
           </form>
         </div>
 
-        {/* Right: Cart Icon with Notification Dot + Simple Sign In Button */}
+        {/* Right: Cart Icon with Minimalist Notification Dot (No Sign In button for guest checkout) */}
         <div className="flex items-center gap-3 sm:gap-4 shrink-0">
-          
-          {/* Simple Sign In / User Button (no massive dropdowns) */}
-          {!user ? (
-            <button
-              type="button"
-              onClick={handleSignInClick}
-              className="text-xs sm:text-sm font-medium text-gray-700 hover:text-gray-900 px-3.5 py-1.5 rounded-full hover:bg-gray-100 border border-gray-200 transition-colors cursor-pointer"
-            >
-              Sign In
-            </button>
-          ) : (
-            <div className="flex items-center gap-2 text-xs sm:text-sm">
-              <span className="font-semibold text-gray-900 flex items-center gap-1">
-                <UserIcon className="w-3.5 h-3.5 text-gray-400" />
-                <span className="hidden sm:inline">Hello,</span> {user.name}
-              </span>
-              <button
-                type="button"
-                onClick={logout}
-                className="text-xs text-gray-500 hover:text-red-600 hover:underline cursor-pointer"
-                title="Sign out of your account"
-              >
-                Sign Out
-              </button>
-            </div>
-          )}
-
-          {/* Clean Cart Icon with Minimalist Notification Dot */}
           <button
             type="button"
             onClick={handleCartClick}
@@ -164,7 +125,6 @@ export const Header: React.FC<HeaderProps> = ({
             aria-label={`Shopping cart with ${displayCartCount} items`}
           >
             <ShoppingCart className="w-5 h-5 text-gray-800 stroke-[1.8]" />
-            {/* Minimalist notification dot for item count */}
             {displayCartCount > 0 && (
               <span className="absolute top-1 right-1 flex items-center justify-center min-w-4 h-4 px-1 text-[10px] font-bold text-white bg-amber-500 rounded-full ring-2 ring-white">
                 {displayCartCount}
