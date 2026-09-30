@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Star, Check } from 'lucide-react';
 import type { Product } from '../../types/product';
 import { splitPrice, formatReviewCount } from '../../utils/formatters';
@@ -68,28 +69,34 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           )}
         </div>
 
-        {/* 1. Product Image (object-contain, fixed height) */}
-        <div className="w-full h-52 flex items-center justify-center p-2 mb-3 bg-gray-50/50 rounded overflow-hidden">
+        {/* 1. Product Image (object-contain, fixed height) with PDP Link */}
+        <Link
+          to={`/product/${product.id}`}
+          className="block w-full h-52 p-2 mb-3 bg-gray-50/50 rounded overflow-hidden focus:outline-none focus:ring-2 focus:ring-amber-500 cursor-pointer"
+          aria-label={`View details for ${product.title}`}
+        >
           <img
             src={product.thumbnail}
             alt={product.title}
             loading="lazy"
             className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-200"
           />
-        </div>
+        </Link>
 
         {/* Brand & Subcategory Header */}
         <div className="text-[11px] text-gray-500 font-medium mb-1">
           {product.brand} · {product.subcategory}
         </div>
 
-        {/* 2. Product Title (line-clamped to 2 lines) */}
-        <h3
-          title={product.title}
-          className="text-sm font-semibold text-gray-900 group-hover:text-amber-700 transition-colors line-clamp-2 leading-snug mb-2 min-h-[2.5rem]"
-        >
-          {product.title}
-        </h3>
+        {/* 2. Product Title (line-clamped to 2 lines) with PDP Link */}
+        <Link to={`/product/${product.id}`} className="block group-hover:text-amber-700 transition-colors">
+          <h3
+            title={product.title}
+            className="text-sm font-semibold text-gray-900 group-hover:text-amber-700 transition-colors line-clamp-2 leading-snug mb-2 min-h-[2.5rem]"
+          >
+            {product.title}
+          </h3>
+        </Link>
 
         {/* 3. Star Rating and Review Count */}
         <div className="flex items-center gap-1.5 mb-2">

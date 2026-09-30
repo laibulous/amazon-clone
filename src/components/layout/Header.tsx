@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   MapPin,
   Search,
@@ -89,8 +90,8 @@ export const Header: React.FC<HeaderProps> = ({
           </button>
 
           {/* 1. Placeholder Logo */}
-          <a
-            href="/"
+          <Link
+            to="/"
             className="flex items-center gap-1 px-2 py-1 rounded border border-transparent hover:border-white transition-colors cursor-pointer group"
           >
             <div className="flex flex-col items-start leading-none">
@@ -105,7 +106,7 @@ export const Header: React.FC<HeaderProps> = ({
               {/* Signature smile curve indicator */}
               <div className="w-14 h-1.5 bg-gradient-to-r from-amber-400 via-amber-500 to-amber-400 rounded-full mt-0.5 -rotate-2" />
             </div>
-          </a>
+          </Link>
 
           {/* 2. Delivery Location Section */}
           <div className="hidden sm:flex items-center gap-1.5 px-2 py-1 rounded border border-transparent hover:border-white transition-colors cursor-pointer">

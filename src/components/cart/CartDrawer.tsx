@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   X,
   ShoppingBag,
@@ -21,6 +22,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   isOpen: propIsOpen,
   onClose: propOnClose,
 }) => {
+  const navigate = useNavigate();
   const storeIsOpen = useCartStore((state) => state.isOpen);
   const closeCart = useCartStore((state) => state.closeCart);
   const items = useCartStore((state) => state.items);
@@ -267,10 +269,14 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
             {/* Checkout Action Button */}
             <button
               type="button"
-              className="w-full bg-[#ffd814] hover:bg-[#f7ca00] active:bg-[#f0b800] text-gray-900 font-bold py-3 px-4 rounded-full text-sm border border-[#fcd200] shadow-sm cursor-pointer transition-colors flex items-center justify-center gap-1.5"
+              onClick={() => {
+                handleClose();
+                navigate('/checkout');
+              }}
+              className="w-full bg-[#ffd814] hover:bg-[#f7ca00] active:bg-[#f0b800] text-gray-900 font-bold py-3 px-4 rounded-full text-sm border border-[#fcd200] shadow-sm cursor-pointer transition-colors flex items-center justify-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-amber-500"
             >
               <ShieldCheck className="w-4 h-4 text-emerald-800" />
-              <span>Proceed to checkout ({summary.itemsCount} items)</span>
+              <span>Proceed to Checkout ({summary.itemsCount} items)</span>
             </button>
 
             {/* Clear Cart Action */}
