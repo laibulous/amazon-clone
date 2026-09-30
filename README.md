@@ -17,14 +17,14 @@ Rather than creating an unopinionated, pixel-for-pixel replica of Amazon's legac
 Here is how and why we deliberately re-engineered the core user journey:
 
 ```
-┌──────────────────────────────────────────────────────────────────────────────────────────────┐
-│                                AMAZON REIMAGINED                                             │
-│                                                                                              │
-│   Discovery (Intent Chips) ──► Evaluation (Certainty) ──► Cart Drawer ──► 1-Page Checkout    │
-│   • "Gifts under $50"          • Dynamic Delivery Date    • All-In Price  • No login gate    │
-│   • "Tech Upgrades"            • Prime pill tags          • Free shipping • Instant pay      │ 
-│   • Zero keyword friction      • High-res zoom            • No surprises  • Sub-2m journey   │
-└──────────────────────────────────────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────────────────────────┐
+│                                AMAZON REIMAGINED                                            │
+│                                                                                             │
+│   Discovery (Intent Chips) ──► Evaluation (Certainty) ──► Cart Drawer ──► 1-Page Checkout   │
+│   • "Gifts under $50"          • Dynamic Delivery Date    • All-In Price  • No login gate   │
+│   • "Tech Upgrades"            • Prime pill tags          • Free shipping • Instant pay     │ 
+│   • Zero keyword friction      • High-res zoom            • No surprises  • Sub-2m journey  │
+└─────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ### 1. Frictionless Single-Page Guest Checkout
