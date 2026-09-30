@@ -5,10 +5,16 @@ import type { Product } from '../types/product';
 
 interface CartState {
   items: CartItem[];
+  isOpen: boolean;
   addToCart: (product: Product, quantity?: number) => void;
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
+  openCart: () => void;
+  closeCart: () => void;
+  toggleCart: () => void;
+  getTotalCount: () => number;
+  getSubtotal: () => number;
   getSummary: () => CartSummary;
 }
 
@@ -16,6 +22,11 @@ export const useCartStore = create<CartState>()(
   persist(
     (set, get) => ({
       items: [],
+      isOpen: false,
+
+      openCart: () => set({ isOpen: true }),
+      closeCart: () => set({ isOpen: false }),
+      toggleCart: () => set((state) => ({ isOpen: !state.isOpen })),
 
       addToCart: (product: Product, quantity: number = 1) => {
         set((state) => {
@@ -31,7 +42,7 @@ export const useCartStore = create<CartState>()(
               ...updatedItems[existingItemIndex],
               quantity: newQty,
             };
-            return { items: updatedItems };
+            return { items: updatedItems, isOpen: true };
           }
 
           return {
@@ -42,6 +53,7 @@ export const useCartStore = create<CartState>()(
                 quantity: Math.min(quantity, product.stock),
               },
             ],
+            isOpen: true,
           };
         });
       },
@@ -71,15 +83,23 @@ export const useCartStore = create<CartState>()(
 
       clearCart: () => set({ items: [] }),
 
-      getSummary: (): CartSummary => {
-        const { items } = get();
+      getTotalCount: () => {
+        return get().items.reduce((sum, item) => sum + item.quantity, 0);
+      },
 
-        const itemsCount = items.reduce((sum, item) => sum + item.quantity, 0);
-
-        const subtotal = items.reduce(
+      getSubtotal: () => {
+        const sub = get().items.reduce(
           (sum, item) => sum + item.product.price * item.quantity,
           0
         );
+        return Number(sub.toFixed(2));
+      },
+
+      getSummary: (): CartSummary => {
+        const { items, getTotalCount, getSubtotal } = get();
+
+        const itemsCount = getTotalCount();
+        const subtotal = getSubtotal();
 
         const originalTotal = items.reduce(
           (sum, item) => sum + item.product.originalPrice * item.quantity,
@@ -100,7 +120,7 @@ export const useCartStore = create<CartState>()(
 
         return {
           itemsCount,
-          subtotal: Number(subtotal.toFixed(2)),
+          subtotal,
           shipping: Number(shipping.toFixed(2)),
           estimatedTax: Number(estimatedTax.toFixed(2)),
           total: Number(total.toFixed(2)),
@@ -110,6 +130,8 @@ export const useCartStore = create<CartState>()(
     }),
     {
       name: 'amazon-clone-cart',
+      // Persist only cart items so drawer visibility starts closed on refresh
+      partialize: (state) => ({ items: state.items }),
     }
   )
 );

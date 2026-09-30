@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { Header } from './components/layout';
 import { ProductGrid } from './components/product';
+import { CartDrawer } from './components/cart';
 import productsData from './data/products.json';
 import type { Product } from './types/product';
 import { Sparkles, Tag, ShieldCheck } from 'lucide-react';
@@ -42,10 +43,9 @@ export default function App() {
         2. Delivery location section
         3. Central search bar with category dropdown + search button
         4. Returns & Orders block
-        5. Cart icon with dynamic count hardcoded to '0'
+        5. Cart icon with dynamic count reading from Zustand store
       */}
       <Header
-        cartCount={0}
         deliveryLocation="New York 10001"
         categories={categories}
         selectedCategory={selectedCategory}
@@ -53,6 +53,9 @@ export default function App() {
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
       />
+
+      {/* Sliding Shopping Cart Drawer */}
+      <CartDrawer />
 
       {/* Main Content Feed */}
       <main className="flex-1 max-w-[1500px] w-full mx-auto px-4 py-4 md:py-6">

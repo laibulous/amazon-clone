@@ -8,9 +8,11 @@ import {
   User,
   X,
 } from 'lucide-react';
+import { useCartStore } from '../../store/useCartStore';
 
 export interface HeaderProps {
   cartCount?: number;
+  onCartClick?: () => void;
   deliveryLocation?: string;
   categories?: string[];
   selectedCategory?: string;
@@ -21,7 +23,8 @@ export interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({
-  cartCount = 0,
+  cartCount,
+  onCartClick,
   deliveryLocation = 'New York 10001',
   categories = ['All Departments', 'Electronics', 'Books', 'Home', 'Fashion'],
   selectedCategory = 'All Departments',
@@ -30,9 +33,22 @@ export const Header: React.FC<HeaderProps> = ({
   onSearchChange,
   onSearchSubmit,
 }) => {
+  const storeTotalCount = useCartStore((state) => state.getTotalCount());
+  const openCart = useCartStore((state) => state.openCart);
+  const displayCartCount = cartCount !== undefined ? cartCount : storeTotalCount;
+
   const [internalQuery, setInternalQuery] = useState(searchQuery);
   const [internalCategory, setInternalCategory] = useState(selectedCategory);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const handleCartClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (onCartClick) {
+      onCartClick();
+    } else {
+      openCart();
+    }
+  };
 
   const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInternalQuery(e.target.value);
@@ -167,22 +183,23 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
 
           {/* 5. Cart Icon with Dynamic Item Count */}
-          <a
-            href="#cart"
-            className="flex items-end gap-1 px-2.5 py-1 rounded border border-transparent hover:border-white transition-colors cursor-pointer relative"
-            aria-label={`Shopping Cart with ${cartCount} items`}
+          <button
+            type="button"
+            onClick={handleCartClick}
+            className="flex items-end gap-1 px-2.5 py-1 rounded border border-transparent hover:border-white transition-colors cursor-pointer relative focus:outline-none"
+            aria-label={`Shopping Cart with ${displayCartCount} items`}
           >
             <div className="relative flex items-center">
               <ShoppingCart className="w-7 h-7 text-white" />
               {/* Dynamic item count badge positioned atop cart icon */}
               <span className="absolute -top-1 left-1/2 -translate-x-1/2 text-xs font-black text-amber-400 bg-transparent min-w-4 text-center leading-none">
-                {cartCount}
+                {displayCartCount}
               </span>
             </div>
             <span className="hidden sm:inline-block text-xs md:text-sm font-bold text-white mb-0.5">
               Cart
             </span>
-          </a>
+          </button>
         </div>
       </div>
 

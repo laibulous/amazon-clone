@@ -2,6 +2,7 @@ import React from 'react';
 import { Star, Check } from 'lucide-react';
 import type { Product } from '../../types/product';
 import { splitPrice, formatReviewCount } from '../../utils/formatters';
+import { useCartStore } from '../../store/useCartStore';
 
 export interface ProductCardProps {
   product: Product;
@@ -12,12 +13,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   product,
   onAddToCart,
 }) => {
+  const addToCart = useCartStore((state) => state.addToCart);
   const { dollars, cents } = splitPrice(product.price);
 
   const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     // Required behavior: log product id to console
     console.log(product.id);
+    addToCart(product);
     if (onAddToCart) {
       onAddToCart(product);
     }
