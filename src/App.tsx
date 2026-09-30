@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { Header } from './components/layout';
 import { CartDrawer } from './components/cart';
-import { HomePage, ProductDetailPage, CheckoutPage, LoginPage } from './pages';
+import { HomePage, ProductDetailPage, CheckoutPage, LoginPage, SuccessPage } from './pages';
 
 function AppContent() {
   const navigate = useNavigate();
@@ -39,6 +39,9 @@ function AppContent() {
 
           {/* Checkout Page */}
           <Route path="/checkout" element={<CheckoutPage />} />
+
+          {/* Success Page */}
+          <Route path="/success" element={<SuccessPage />} />
 
           {/* Mock Login Page */}
           <Route path="/login" element={<LoginPage />} />

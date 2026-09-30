@@ -1,27 +1,23 @@
 import React, { useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import {
-  CheckCircle2,
   Lock,
   ArrowLeft,
-  Truck,
   CreditCard,
-  ShoppingBag,
   ShieldCheck,
   Check,
   Mail,
+  Loader2,
 } from 'lucide-react';
 import { useCartStore } from '../store/useCartStore';
 import { formatCurrency, getEstimatedDelivery } from '../utils/formatters';
 
 export const CheckoutPage: React.FC = () => {
+  const navigate = useNavigate();
   const items = useCartStore((state) => state.items);
-  const clearCart = useCartStore((state) => state.clearCart);
   const getSummary = useCartStore((state) => state.getSummary);
 
-  const [orderPlaced, setOrderPlaced] = useState<boolean>(false);
-  const [orderNumber, setOrderNumber] = useState<string>('');
-  const [placedSummary, setPlacedSummary] = useState(getSummary());
+  const [isProcessing, setIsProcessing] = useState<boolean>(false);
 
   // Guest Contact Information (no login roadblock)
   const [contactEmail, setContactEmail] = useState<string>('alex.johnson@example.com');
@@ -37,85 +33,83 @@ export const CheckoutPage: React.FC = () => {
     zipCode: '98101',
   });
 
-  // Form states for Mock Payment Details
+  // Stripe Elements Mock Payment Details
   const [payment, setPayment] = useState({
-    cardNumber: '4242 •••• •••• 4242',
+    cardNumber: '4242 4242 4242 4242',
     cardName: 'Alex Johnson',
     expiry: '12 / 28',
-    cvv: '842',
+    cvc: '842',
   });
 
   const [deliveryMethod, setDeliveryMethod] = useState<'free' | 'express'>('free');
 
-  // If the cart is empty, immediately redirect back to homepage (unless order just placed)
-  if (items.length === 0 && !orderPlaced) {
+  // If the cart is empty, immediately redirect back to homepage (unless order is processing)
+  if (items.length === 0 && !isProcessing) {
     return <Navigate to="/" replace />;
   }
 
-  const summary = orderPlaced ? placedSummary : getSummary();
+  const summary = getSummary();
 
-  const handlePlaceOrder = (e: React.FormEvent) => {
-    e.preventDefault();
-    const randomOrderId = `114-${Math.floor(1000000 + Math.random() * 9000000)}-${Math.floor(1000000 + Math.random() * 9000000)}`;
-    setPlacedSummary(getSummary());
-    setOrderNumber(randomOrderId);
-    clearCart();
-    setOrderPlaced(true);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  // Helper to format card number with spaces every 4 digits
+  const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value.replace(/\D/g, '').slice(0, 16);
+    const formatted = raw.replace(/(\d{4})(?=\d)/g, '$1 ');
+    setPayment((prev) => ({ ...prev, cardNumber: formatted }));
   };
 
-  // Order Success Screen (Guest Confirmation)
-  if (orderPlaced) {
-    return (
-      <div className="max-w-2xl mx-auto px-4 py-16 text-center animate-in fade-in duration-300">
-        <div className="bg-white rounded-3xl border border-gray-200/90 p-8 sm:p-10 shadow-sm">
-          <div className="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-5 ring-8 ring-emerald-50/50">
-            <CheckCircle2 className="w-10 h-10" />
-          </div>
+  // Helper to format MM / YY expiry date
+  const handleExpiryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value.replace(/\D/g, '').slice(0, 4);
+    if (raw.length >= 3) {
+      setPayment((prev) => ({ ...prev, expiry: `${raw.slice(0, 2)} / ${raw.slice(2)}` }));
+    } else {
+      setPayment((prev) => ({ ...prev, expiry: raw }));
+    }
+  };
 
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-2">
-            Order Confirmed!
-          </h1>
-          <p className="text-sm text-gray-600 mb-1">
-            Thank you, <strong className="text-gray-900">{shipping.fullName}</strong>. A mock order confirmation has been sent to{' '}
-            <strong className="text-blue-700 font-semibold">{contactEmail}</strong>.
-          </p>
-          <p className="text-xs text-gray-500 mb-6">
-            Order Number: <span className="font-mono font-bold text-gray-900">{orderNumber}</span>
-          </p>
+  // Helper for CVC
+  const handleCvcChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value.replace(/\D/g, '').slice(0, 4);
+    setPayment((prev) => ({ ...prev, cvc: raw }));
+  };
 
-          <div className="bg-gray-50/80 rounded-2xl p-5 border border-gray-100 text-left space-y-3 mb-8">
-            <div className="flex items-center gap-2 text-sm font-semibold text-gray-900 pb-2 border-b border-gray-200/60">
-              <Truck className="w-4 h-4 text-emerald-600" />
-              <span>Estimated Delivery: {getEstimatedDelivery(true)}</span>
-            </div>
-            <div className="grid grid-cols-2 gap-4 text-xs text-gray-600">
-              <div>
-                <span className="text-gray-400 block mb-0.5">Shipping to:</span>
-                <p className="font-medium text-gray-900">{shipping.street}</p>
-                <p>{shipping.city}, {shipping.state} {shipping.zipCode}</p>
-              </div>
-              <div>
-                <span className="text-gray-400 block mb-0.5">Payment:</span>
-                <p className="font-medium text-gray-900">Visa ending in 4242</p>
-                <p className="text-emerald-700 font-medium">Total Paid: {formatCurrency(placedSummary.total)}</p>
-              </div>
-            </div>
-          </div>
+  // Detect card brand based on card number
+  const getCardBrand = (num: string) => {
+    const clean = num.replace(/\s/g, '');
+    if (clean.startsWith('4')) return 'Visa';
+    if (/^5[1-5]/.test(clean)) return 'Mastercard';
+    if (/^3[47]/.test(clean)) return 'Amex';
+    if (/^6/.test(clean)) return 'Discover';
+    return 'Card';
+  };
 
-          <Link
-            to="/"
-            className="inline-flex items-center gap-2 bg-gray-900 hover:bg-black text-white font-semibold px-8 py-3.5 rounded-full text-sm shadow-sm transition-all cursor-pointer active:scale-95"
-          >
-            <ShoppingBag className="w-4 h-4" />
-            Continue Shopping
-          </Link>
-        </div>
-      </div>
-    );
-  }
+  // 4. Wire up Place Order with realistic processing state and 2000ms delay redirect
+  const handlePlaceOrder = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (isProcessing) return;
 
-  // Two-Column Consolidated Seamless Guest Checkout Page
+    setIsProcessing(true);
+
+    const randomOrderId = `114-${Math.floor(1000000 + Math.random() * 9000000)}-${Math.floor(1000000 + Math.random() * 9000000)}`;
+
+    const orderPayload = {
+      orderNumber: randomOrderId,
+      contactEmail,
+      items,
+      summary,
+      shipping,
+      deliveryMethod,
+    };
+
+    // Simulate 2000ms network latency to mock payment intent processing
+    setTimeout(() => {
+      navigate('/success', {
+        state: orderPayload,
+        replace: true,
+      });
+    }, 2000);
+  };
+
   return (
     <div className="max-w-[1300px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
       
@@ -130,18 +124,18 @@ export const CheckoutPage: React.FC = () => {
         </Link>
         <div className="flex items-center gap-1.5 text-xs text-gray-500">
           <ShieldCheck className="w-4 h-4 text-emerald-600" />
-          <span>Seamless Guest Checkout · 256-Bit SSL</span>
+          <span>Frictionless Stripe Elements Mock · 256-Bit SSL</span>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
         
-        {/* Left Column: Unified Single-Scroll Form (Contact Email, Shipping & Payment) */}
+        {/* Left Column: Unified Single-Scroll Form (Contact Email, Shipping & Stripe Elements Mock) */}
         <div className="lg:col-span-7 space-y-6">
           
           <form onSubmit={handlePlaceOrder} id="checkout-form" className="space-y-6">
             
-            {/* 3. Top of Form: Simple 'Contact Email' Input Field for Guest Confirmation */}
+            {/* 1. Contact Information */}
             <div className="bg-white rounded-2xl border border-gray-200/90 p-6 sm:p-7 shadow-xs">
               <div className="flex items-center justify-between mb-4 pb-3 border-b border-gray-100">
                 <div className="flex items-center gap-2.5">
@@ -165,10 +159,11 @@ export const CheckoutPage: React.FC = () => {
                   <input
                     type="email"
                     required
+                    disabled={isProcessing}
                     value={contactEmail}
                     onChange={(e) => setContactEmail(e.target.value)}
                     placeholder="alex.johnson@example.com"
-                    className="w-full py-3 pl-4 pr-11 text-sm text-gray-900 bg-white border border-gray-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition-all shadow-2xs placeholder:text-gray-400"
+                    className="w-full py-3 pl-4 pr-11 text-sm text-gray-900 bg-white border border-gray-300 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all shadow-2xs placeholder:text-gray-400 disabled:opacity-50"
                   />
                   <Mail className="w-4 h-4 text-gray-400 absolute right-4 top-3.5 pointer-events-none" />
                 </div>
@@ -178,7 +173,7 @@ export const CheckoutPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Step 2: Shipping Details */}
+            {/* 2. Shipping Details */}
             <div className="bg-white rounded-2xl border border-gray-200/90 p-6 sm:p-7 shadow-xs">
               <div className="flex items-center gap-2.5 mb-5 pb-3 border-b border-gray-100">
                 <span className="w-6 h-6 rounded-full bg-gray-900 text-white text-xs font-bold flex items-center justify-center shrink-0">
@@ -198,10 +193,11 @@ export const CheckoutPage: React.FC = () => {
                   <input
                     type="text"
                     required
+                    disabled={isProcessing}
                     value={shipping.fullName}
                     onChange={(e) => setShipping({ ...shipping, fullName: e.target.value })}
                     placeholder="Alex Johnson"
-                    className="w-full py-3 px-4 text-sm text-gray-900 bg-white border border-gray-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition-all shadow-2xs placeholder:text-gray-400"
+                    className="w-full py-3 px-4 text-sm text-gray-900 bg-white border border-gray-300 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all shadow-2xs placeholder:text-gray-400 disabled:opacity-50"
                   />
                 </div>
 
@@ -213,10 +209,11 @@ export const CheckoutPage: React.FC = () => {
                   <input
                     type="tel"
                     required
+                    disabled={isProcessing}
                     value={shipping.phone}
                     onChange={(e) => setShipping({ ...shipping, phone: e.target.value })}
                     placeholder="(555) 019-2834"
-                    className="w-full py-3 px-4 text-sm text-gray-900 bg-white border border-gray-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition-all shadow-2xs placeholder:text-gray-400"
+                    className="w-full py-3 px-4 text-sm text-gray-900 bg-white border border-gray-300 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all shadow-2xs placeholder:text-gray-400 disabled:opacity-50"
                   />
                 </div>
 
@@ -228,10 +225,11 @@ export const CheckoutPage: React.FC = () => {
                   <input
                     type="text"
                     required
+                    disabled={isProcessing}
                     value={shipping.street}
                     onChange={(e) => setShipping({ ...shipping, street: e.target.value })}
                     placeholder="742 Evergreen Terrace"
-                    className="w-full py-3 px-4 text-sm text-gray-900 bg-white border border-gray-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition-all shadow-2xs placeholder:text-gray-400"
+                    className="w-full py-3 px-4 text-sm text-gray-900 bg-white border border-gray-300 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all shadow-2xs placeholder:text-gray-400 disabled:opacity-50"
                   />
                 </div>
 
@@ -242,10 +240,11 @@ export const CheckoutPage: React.FC = () => {
                   </label>
                   <input
                     type="text"
+                    disabled={isProcessing}
                     value={shipping.apt}
                     onChange={(e) => setShipping({ ...shipping, apt: e.target.value })}
                     placeholder="Suite 4B"
-                    className="w-full py-3 px-4 text-sm text-gray-900 bg-white border border-gray-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition-all shadow-2xs placeholder:text-gray-400"
+                    className="w-full py-3 px-4 text-sm text-gray-900 bg-white border border-gray-300 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all shadow-2xs placeholder:text-gray-400 disabled:opacity-50"
                   />
                 </div>
 
@@ -257,10 +256,11 @@ export const CheckoutPage: React.FC = () => {
                   <input
                     type="text"
                     required
+                    disabled={isProcessing}
                     value={shipping.city}
                     onChange={(e) => setShipping({ ...shipping, city: e.target.value })}
                     placeholder="Seattle"
-                    className="w-full py-3 px-4 text-sm text-gray-900 bg-white border border-gray-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition-all shadow-2xs placeholder:text-gray-400"
+                    className="w-full py-3 px-4 text-sm text-gray-900 bg-white border border-gray-300 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all shadow-2xs placeholder:text-gray-400 disabled:opacity-50"
                   />
                 </div>
 
@@ -273,10 +273,11 @@ export const CheckoutPage: React.FC = () => {
                     <input
                       type="text"
                       required
+                      disabled={isProcessing}
                       value={shipping.state}
                       onChange={(e) => setShipping({ ...shipping, state: e.target.value })}
                       placeholder="WA"
-                      className="w-full py-3 px-4 text-sm text-gray-900 bg-white border border-gray-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition-all shadow-2xs placeholder:text-gray-400"
+                      className="w-full py-3 px-4 text-sm text-gray-900 bg-white border border-gray-300 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all shadow-2xs placeholder:text-gray-400 disabled:opacity-50"
                     />
                   </div>
                   <div>
@@ -286,10 +287,11 @@ export const CheckoutPage: React.FC = () => {
                     <input
                       type="text"
                       required
+                      disabled={isProcessing}
                       value={shipping.zipCode}
                       onChange={(e) => setShipping({ ...shipping, zipCode: e.target.value })}
                       placeholder="98101"
-                      className="w-full py-3 px-4 text-sm text-gray-900 bg-white border border-gray-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition-all shadow-2xs placeholder:text-gray-400"
+                      className="w-full py-3 px-4 text-sm text-gray-900 bg-white border border-gray-300 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all shadow-2xs placeholder:text-gray-400 disabled:opacity-50"
                     />
                   </div>
                 </div>
@@ -302,12 +304,12 @@ export const CheckoutPage: React.FC = () => {
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div
-                    onClick={() => setDeliveryMethod('free')}
+                    onClick={() => !isProcessing && setDeliveryMethod('free')}
                     className={`p-3.5 rounded-xl border cursor-pointer transition-all flex items-center justify-between ${
                       deliveryMethod === 'free'
                         ? 'border-gray-900 bg-gray-50/80 ring-1 ring-gray-900'
                         : 'border-gray-200 hover:border-gray-300'
-                    }`}
+                    } ${isProcessing ? 'pointer-events-none opacity-50' : ''}`}
                   >
                     <div>
                       <p className="text-xs font-bold text-gray-900">FREE Prime Delivery</p>
@@ -319,12 +321,12 @@ export const CheckoutPage: React.FC = () => {
                   </div>
 
                   <div
-                    onClick={() => setDeliveryMethod('express')}
+                    onClick={() => !isProcessing && setDeliveryMethod('express')}
                     className={`p-3.5 rounded-xl border cursor-pointer transition-all flex items-center justify-between ${
                       deliveryMethod === 'express'
                         ? 'border-gray-900 bg-gray-50/80 ring-1 ring-gray-900'
                         : 'border-gray-200 hover:border-gray-300'
-                    }`}
+                    } ${isProcessing ? 'pointer-events-none opacity-50' : ''}`}
                   >
                     <div>
                       <p className="text-xs font-bold text-gray-900">Same-Day Rush</p>
@@ -338,86 +340,122 @@ export const CheckoutPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Step 3: Mock Payment Details */}
+            {/* 1, 2, 3. Payment Method: High-Fidelity Modern Stripe Elements UI Mock */}
             <div className="bg-white rounded-2xl border border-gray-200/90 p-6 sm:p-7 shadow-xs">
-              <div className="flex items-center justify-between mb-5 pb-3 border-b border-gray-100">
+              <div className="flex items-center justify-between mb-4 pb-3 border-b border-gray-100">
                 <div className="flex items-center gap-2.5">
                   <span className="w-6 h-6 rounded-full bg-gray-900 text-white text-xs font-bold flex items-center justify-center shrink-0">
                     3
                   </span>
                   <h2 className="text-base sm:text-lg font-bold text-gray-900">
-                    Payment Details
+                    Payment Method
                   </h2>
                 </div>
-                <div className="flex items-center gap-1 text-[11px] text-gray-500 font-medium">
-                  <Lock className="w-3.5 h-3.5 text-gray-400" />
-                  <span>Encrypted</span>
+                <div className="flex items-center gap-1.5 text-xs text-gray-500 font-medium">
+                  <Lock className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>Stripe Elements Secure</span>
                 </div>
               </div>
 
               <div className="space-y-4">
-                {/* Card Number */}
+                {/* Unified Stripe Elements Card Input */}
                 <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-1.5">
-                    Card Number
-                  </label>
-                  <div className="relative">
-                    <input
-                      type="text"
-                      required
-                      value={payment.cardNumber}
-                      onChange={(e) => setPayment({ ...payment, cardNumber: e.target.value })}
-                      placeholder="4242 •••• •••• 4242"
-                      className="w-full py-3 pl-4 pr-12 text-sm text-gray-900 bg-white border border-gray-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition-all shadow-2xs font-mono placeholder:text-gray-400"
-                    />
-                    <CreditCard className="w-5 h-5 text-gray-400 absolute right-4 top-3.5 pointer-events-none" />
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="text-xs font-semibold text-gray-700">
+                      Card information
+                    </label>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded border border-blue-100">
+                        VISA
+                      </span>
+                      <span className="text-[10px] font-bold text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-100">
+                        MC
+                      </span>
+                      <span className="text-[10px] font-bold text-indigo-700 bg-indigo-50 px-1.5 py-0.5 rounded border border-indigo-100">
+                        AMEX
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Clean, Unified Input Box with border-gray-300 */}
+                  <div
+                    className={`border border-gray-300 rounded-xl bg-white shadow-2xs focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 overflow-hidden transition-all ${
+                      isProcessing ? 'opacity-60 bg-gray-50' : ''
+                    }`}
+                  >
+                    {/* Top Row: Card Number & Brand Badge */}
+                    <div className="flex items-center px-3.5 py-3">
+                      <CreditCard className="w-4 h-4 text-gray-400 shrink-0 mr-2.5" />
+                      <input
+                        type="text"
+                        required
+                        disabled={isProcessing}
+                        value={payment.cardNumber}
+                        onChange={handleCardNumberChange}
+                        placeholder="1234 1234 1234 1234"
+                        className="w-full text-sm text-gray-900 placeholder:text-gray-400 outline-none bg-transparent font-mono tracking-wider disabled:cursor-not-allowed"
+                      />
+                      <span className="text-[10px] font-bold text-gray-600 bg-gray-100 px-2 py-0.5 rounded uppercase tracking-wider shrink-0 ml-2">
+                        {getCardBrand(payment.cardNumber)}
+                      </span>
+                    </div>
+
+                    {/* Bottom Row: Expiration & CVC with dividers */}
+                    <div className="border-t border-gray-200 flex divide-x divide-gray-200">
+                      {/* Expiration MM / YY */}
+                      <div className="flex-1 px-3.5 py-2.5">
+                        <input
+                          type="text"
+                          required
+                          disabled={isProcessing}
+                          value={payment.expiry}
+                          onChange={handleExpiryChange}
+                          placeholder="MM / YY"
+                          className="w-full text-sm text-gray-900 placeholder:text-gray-400 outline-none bg-transparent font-mono disabled:cursor-not-allowed"
+                        />
+                      </div>
+
+                      {/* CVC Code with Security Lock Icon */}
+                      <div className="flex-1 flex items-center px-3.5 py-2.5 gap-2">
+                        <input
+                          type="text"
+                          required
+                          disabled={isProcessing}
+                          maxLength={4}
+                          value={payment.cvc}
+                          onChange={handleCvcChange}
+                          placeholder="CVC"
+                          className="w-full text-sm text-gray-900 placeholder:text-gray-400 outline-none bg-transparent font-mono disabled:cursor-not-allowed"
+                        />
+                        <Lock className="w-3.5 h-3.5 text-gray-400 shrink-0 pointer-events-none" />
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                {/* Name on Card */}
+                {/* Cardholder Name */}
                 <div>
                   <label className="block text-xs font-semibold text-gray-700 mb-1.5">
-                    Name on Card
+                    Cardholder name
                   </label>
                   <input
                     type="text"
                     required
+                    disabled={isProcessing}
                     value={payment.cardName}
                     onChange={(e) => setPayment({ ...payment, cardName: e.target.value })}
                     placeholder="Alex Johnson"
-                    className="w-full py-3 px-4 text-sm text-gray-900 bg-white border border-gray-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition-all shadow-2xs placeholder:text-gray-400"
+                    className="w-full py-2.5 px-3.5 text-sm text-gray-900 bg-white border border-gray-300 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all shadow-2xs placeholder:text-gray-400 disabled:opacity-50"
                   />
                 </div>
 
-                {/* Expiry & CVV */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-semibold text-gray-700 mb-1.5">
-                      Expiry Date
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={payment.expiry}
-                      onChange={(e) => setPayment({ ...payment, expiry: e.target.value })}
-                      placeholder="MM / YY"
-                      className="w-full py-3 px-4 text-sm text-gray-900 bg-white border border-gray-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition-all shadow-2xs placeholder:text-gray-400 text-center"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-semibold text-gray-700 mb-1.5">
-                      Security Code (CVV)
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      maxLength={4}
-                      value={payment.cvv}
-                      onChange={(e) => setPayment({ ...payment, cvv: e.target.value })}
-                      placeholder="123"
-                      className="w-full py-3 px-4 text-sm text-gray-900 bg-white border border-gray-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition-all shadow-2xs placeholder:text-gray-400 text-center font-mono"
-                    />
-                  </div>
+                {/* Stripe Trust Footer */}
+                <div className="flex items-center justify-between text-[11px] text-gray-400 pt-1">
+                  <span>Cardholder verification encrypted via 256-bit SSL</span>
+                  <span className="font-semibold text-gray-500 flex items-center gap-1">
+                    <Lock className="w-3 h-3 text-emerald-600" />
+                    Stripe Elements Verified
+                  </span>
                 </div>
               </div>
             </div>
@@ -425,7 +463,7 @@ export const CheckoutPage: React.FC = () => {
           </form>
         </div>
 
-        {/* Right Column: Sticky "Order Summary" Card */}
+        {/* Right Column: Sticky "Order Summary" Card with Animated Place Order Button */}
         <div className="lg:col-span-5">
           <div className="sticky top-24 bg-white rounded-2xl border border-gray-200/90 p-6 sm:p-7 shadow-xs space-y-6">
             
@@ -499,23 +537,33 @@ export const CheckoutPage: React.FC = () => {
               </div>
             </div>
 
-            {/* High-Contrast Large Place Order Button */}
+            {/* 4. High-Contrast "Place Order" Button with Realistic Processing State */}
             <button
               type="submit"
               form="checkout-form"
-              className="w-full bg-gray-900 hover:bg-black active:bg-gray-800 text-white text-base font-bold py-4 px-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-200 active:scale-[0.99] flex items-center justify-center gap-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
+              disabled={isProcessing}
+              className="w-full bg-gray-900 hover:bg-black active:bg-gray-800 disabled:bg-gray-700 disabled:cursor-not-allowed text-white text-base font-bold py-4 px-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-200 active:scale-[0.99] flex items-center justify-center gap-2.5 cursor-pointer focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
             >
-              <Lock className="w-4 h-4 text-emerald-400" />
-              <span>
-                Place Order · {formatCurrency(
-                  deliveryMethod === 'express' ? summary.total + 9.99 : summary.total
-                )}
-              </span>
+              {isProcessing ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin text-white" />
+                  <span>Processing...</span>
+                </>
+              ) : (
+                <>
+                  <Lock className="w-4 h-4 text-emerald-400" />
+                  <span>
+                    Place Order · {formatCurrency(
+                      deliveryMethod === 'express' ? summary.total + 9.99 : summary.total
+                    )}
+                  </span>
+                </>
+              )}
             </button>
 
-            {/* Seamless Guest Guarantee Footer */}
+            {/* Guarantee Footer */}
             <p className="text-[11px] text-gray-400 text-center leading-tight">
-              By clicking Place Order, your mock order will be processed instantly. Confirmation sent to {contactEmail}. Free 30-day returns.
+              By placing your order, your payment will be processed securely via mock Stripe Elements. Free 30-day returns.
             </p>
           </div>
         </div>
