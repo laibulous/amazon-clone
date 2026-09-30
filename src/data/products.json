@@ -1,0 +1,790 @@
+[
+  {
+    "id": "prod-elec-001",
+    "asin": "B09XS7JWHH",
+    "title": "Sony WH-1000XM5 Wireless Noise-Canceling Over-Ear Headphones with Auto NC Optimizer, Mic for Hands-Free Calling - Black",
+    "brand": "Sony",
+    "category": "Electronics",
+    "subcategory": "Headphones",
+    "price": 348.00,
+    "originalPrice": 399.99,
+    "discountPercentage": 13,
+    "rating": 4.6,
+    "reviewCount": 18450,
+    "isPrime": true,
+    "isBestSeller": true,
+    "isAmazonChoice": false,
+    "stock": 42,
+    "inStock": true,
+    "thumbnail": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1484704849700-f032a568e944?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=800&auto=format&fit=crop&q=80"
+    ],
+    "description": "The Sony WH-1000XM5 headphones rewrite the rules for distraction-free listening. Two processors control 8 microphones for unprecedented noise cancellation and exceptional call quality.",
+    "features": [
+      "Industry Leading noise cancellation with two processors and 8 microphones",
+      "Magnificent sound engineered to perfection with the Integrated Processor V1",
+      "Crystal clear hands-free calling with 4 beamforming microphones",
+      "Up to 30-hour battery life with quick charging (3 min charge for 3 hours of playback)",
+      "Ultra-comfortable, lightweight design with soft fit leather"
+    ],
+    "specifications": {
+      "Connectivity": "Bluetooth 5.2, 3.5mm AUX",
+      "Battery Life": "Up to 30 hours",
+      "Noise Control": "Active Noise Cancellation (ANC)",
+      "Weight": "250 grams",
+      "Color": "Black"
+    },
+    "badgeText": "#1 Best Seller in Over-Ear Headphones"
+  },
+  {
+    "id": "prod-elec-002",
+    "asin": "B0CX236WG7",
+    "title": "Apple 2024 MacBook Air 13-inch Laptop with M3 chip: Built for Apple Intelligence, 8-core CPU, 10-core GPU, 16GB Unified Memory, 512GB SSD - Space Gray",
+    "brand": "Apple",
+    "category": "Electronics",
+    "subcategory": "Laptops",
+    "price": 1249.00,
+    "originalPrice": 1499.00,
+    "discountPercentage": 17,
+    "rating": 4.8,
+    "reviewCount": 3890,
+    "isPrime": true,
+    "isBestSeller": false,
+    "isAmazonChoice": true,
+    "stock": 18,
+    "inStock": true,
+    "thumbnail": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&auto=format&fit=crop&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=800&auto=format&fit=crop&q=80"
+    ],
+    "description": "Supercharged by the next-generation M3 chip, the redesigned MacBook Air combines incredible performance and up to 18 hours of battery life into an ultra-thin aluminum enclosure.",
+    "features": [
+      "STRIKINGLY THIN DESIGN – Lightweight and under half an inch thin, take it anywhere you go",
+      "GET MORE DONE FASTER – The powerful 8-core CPU and 10-core GPU of the Apple M3 chip keep things running smooth",
+      "UP TO 18 HOURS OF BATTERY LIFE – Go all day with power-efficient battery life",
+      "A BRILLIANT DISPLAY – The 13.6-inch Liquid Retina display supports 1 billion colors",
+      "SHARP CAMERA AND AUDIO – 1080p FaceTime HD camera, three-mic array, and four-speaker sound system"
+    ],
+    "specifications": {
+      "Screen Size": "13.6 Inches Liquid Retina",
+      "Processor": "Apple M3 Chip",
+      "RAM": "16 GB Unified Memory",
+      "Storage": "512 GB SSD",
+      "Operating System": "macOS"
+    },
+    "badgeText": "Amazon's Choice in Apple Laptops"
+  },
+  {
+    "id": "prod-elec-003",
+    "asin": "B09HM94VDS",
+    "title": "Logitech MX Master 3S Wireless Performance Mouse with Quiet Clicks, 8K DPI Sensor, MagSpeed Scrolling, Bluetooth/USB - Graphite",
+    "brand": "Logitech",
+    "category": "Electronics",
+    "subcategory": "Computer Accessories",
+    "price": 89.99,
+    "originalPrice": 99.99,
+    "discountPercentage": 10,
+    "rating": 4.7,
+    "reviewCount": 24110,
+    "isPrime": true,
+    "isBestSeller": true,
+    "isAmazonChoice": false,
+    "stock": 55,
+    "inStock": true,
+    "thumbnail": "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=800&auto=format&fit=crop&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=800&auto=format&fit=crop&q=80"
+    ],
+    "description": "An icon remastered. Feel every moment of your workflow with even more precision, tactility, and performance, thanks to Quiet Clicks and an 8,000 DPI track-on-glass sensor.",
+    "features": [
+      "Any-surface tracking – now 8K DPI: Use MX Master 3S on glass with pixel-level precision",
+      "Introducing Quiet Clicks – 90% less click noise with satisfying tactile feel",
+      "MagSpeed scrolling: 90% faster, 87% more precise, and ultra-quiet",
+      "Ergonomic silhouette crafted for palm comfort and intuitive thumb controls",
+      "Cross-computer Flow control across Windows and macOS"
+    ],
+    "specifications": {
+      "Sensor Resolution": "8000 DPI Darkfield",
+      "Battery Life": "Up to 70 days on full charge",
+      "Connectivity": "Bluetooth Low Energy & Logi Bolt",
+      "Buttons": "7 customizable buttons"
+    },
+    "badgeText": "#1 Best Seller in Computer Mice"
+  },
+  {
+    "id": "prod-elec-004",
+    "asin": "B088GH4GQS",
+    "title": "SAMSUNG 34-Inch Odyssey G5 Ultra-Wide Dual QHD Curved Gaming Monitor, 165Hz, 1ms, HDR10, AMD FreeSync Premium (LC34G55TWWNXZA)",
+    "brand": "SAMSUNG",
+    "category": "Electronics",
+    "subcategory": "Monitors",
+    "price": 379.99,
+    "originalPrice": 549.99,
+    "discountPercentage": 31,
+    "rating": 4.5,
+    "reviewCount": 9720,
+    "isPrime": true,
+    "isBestSeller": false,
+    "isAmazonChoice": true,
+    "stock": 14,
+    "inStock": true,
+    "thumbnail": "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=800&auto=format&fit=crop&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=800&auto=format&fit=crop&q=80"
+    ],
+    "description": "Wrap your senses in vivid scenes. The 1000R curved display fills every part of your peripheral vision and draws you right into the game.",
+    "features": [
+      "ULTRA WQHD RESOLUTION – Immerse yourself with 3440 x 1440 crystal clear resolution",
+      "165HZ REFRESH RATE & 1MS RESPONSE TIME – Conquer every enemy with ultra-smooth action",
+      "AMD FREESYNC PREMIUM – Effortless smooth gameplay without screen tear",
+      "1000R CURVATURE – Matches human eyesight curvature for reduced eye strain",
+      "HDR10 – Awe-inspiring graphics with deep blacks and luminous whites"
+    ],
+    "specifications": {
+      "Screen Size": "34 Inches Curved 1000R",
+      "Resolution": "3440 x 1440 Ultra WQHD",
+      "Refresh Rate": "165 Hz",
+      "Response Time": "1 ms (MPRT)",
+      "Ports": "1x DisplayPort 1.4, 1x HDMI 2.0"
+    },
+    "badgeText": "Amazon's Choice in Gaming Monitors"
+  },
+  {
+    "id": "prod-elec-005",
+    "asin": "B08KTZ8249",
+    "title": "Kindle Paperwhite (16 GB) – Now with a 6.8\" display and adjustable warm light – Black",
+    "brand": "Amazon",
+    "category": "Electronics",
+    "subcategory": "E-readers",
+    "price": 149.99,
+    "originalPrice": 169.99,
+    "discountPercentage": 12,
+    "rating": 4.7,
+    "reviewCount": 42300,
+    "isPrime": true,
+    "isBestSeller": true,
+    "isAmazonChoice": false,
+    "stock": 80,
+    "inStock": true,
+    "thumbnail": "https://images.unsplash.com/photo-1592496001020-d31bd830651f?w=800&auto=format&fit=crop&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1592496001020-d31bd830651f?w=800&auto=format&fit=crop&q=80"
+    ],
+    "description": "Kindle Paperwhite is thin, lightweight, and travels easily so you can enjoy your favorite books at any time. With our signature 300 ppi glare-free Paperwhite display, text reads like real paper.",
+    "features": [
+      "Now with a 6.8” display, thinner borders, adjustable warm light, and up to 10 weeks of battery life",
+      "Flush-front design and 300 ppi glare-free display that reads like real paper, even in bright sunlight",
+      "Adjustable warm light to shift screen shade from white to amber",
+      "Waterproof (IPX8), so you’re free to read and relax at the beach or in the bath",
+      "Store thousands of titles and take them all with you"
+    ],
+    "specifications": {
+      "Display": "6.8\" Paperwhite display with 300 ppi",
+      "Storage": "16 GB",
+      "Battery Life": "Up to 10 weeks",
+      "Waterproofing": "IPX8 waterproof",
+      "Weight": "205 grams"
+    },
+    "badgeText": "#1 Best Seller in E-readers"
+  },
+  {
+    "id": "prod-book-001",
+    "asin": "0735211299",
+    "title": "Atomic Habits: An Easy & Proven Way to Build Good Habits & Break Bad Ones - Hardcover by James Clear",
+    "brand": "Avery Publishing",
+    "category": "Books",
+    "subcategory": "Self-Help",
+    "price": 13.79,
+    "originalPrice": 27.00,
+    "discountPercentage": 49,
+    "rating": 4.8,
+    "reviewCount": 132400,
+    "isPrime": true,
+    "isBestSeller": true,
+    "isAmazonChoice": false,
+    "stock": 120,
+    "inStock": true,
+    "thumbnail": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=800&auto=format&fit=crop&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=800&auto=format&fit=crop&q=80"
+    ],
+    "description": "No matter your goals, Atomic Habits offers a proven framework for improving--every day. James Clear, one of the world's leading experts on habit formation, reveals practical strategies that will teach you exactly how to form good habits, break bad ones, and master tiny behaviors that lead to remarkable results.",
+    "features": [
+      "Over 15 million copies sold worldwide",
+      "Practical four-step framework: Cue, Craving, Response, Reward",
+      "Learn how to overcome a lack of motivation and willpower",
+      "Design your environment to make success easier",
+      "Hardcover edition with ribbon bookmark"
+    ],
+    "specifications": {
+      "Format": "Hardcover",
+      "Pages": "320 pages",
+      "Language": "English",
+      "Publisher": "Avery",
+      "Publication Date": "October 16, 2018"
+    },
+    "badgeText": "#1 Best Seller in Nonfiction"
+  },
+  {
+    "id": "prod-book-002",
+    "asin": "0132350882",
+    "title": "Clean Code: A Handbook of Agile Software Craftsmanship - Paperback by Robert C. Martin",
+    "brand": "Prentice Hall",
+    "category": "Books",
+    "subcategory": "Computer Science",
+    "price": 42.49,
+    "originalPrice": 59.99,
+    "discountPercentage": 29,
+    "rating": 4.7,
+    "reviewCount": 6850,
+    "isPrime": true,
+    "isBestSeller": false,
+    "isAmazonChoice": true,
+    "stock": 35,
+    "inStock": true,
+    "thumbnail": "https://images.unsplash.com/photo-1532012164546-f432f2e3777a?w=800&auto=format&fit=crop&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1532012164546-f432f2e3777a?w=800&auto=format&fit=crop&q=80"
+    ],
+    "description": "Even bad code can function. But if code isn't clean, it can bring a development organization to its knees. Every year, countless hours and significant resources are lost because of poorly written code. Clean Code is divided into three parts: principles, patterns, and practices of writing clean code.",
+    "features": [
+      "Essential reading for professional software engineers and architects",
+      "How to tell the difference between good and bad code",
+      "How to write good code and how to transform bad code into good code",
+      "How to create good names, good functions, good objects, and good classes",
+      "How to implement complete error handling without obscuring code logic"
+    ],
+    "specifications": {
+      "Format": "Paperback",
+      "Pages": "464 pages",
+      "Language": "English",
+      "Publisher": "Prentice Hall",
+      "Publication Date": "August 1, 2008"
+    },
+    "badgeText": "Amazon's Choice in Software Engineering Books"
+  },
+  {
+    "id": "prod-book-003",
+    "asin": "0593135202",
+    "title": "Project Hail Mary: A Novel - Hardcover by Andy Weir",
+    "brand": "Ballantine Books",
+    "category": "Books",
+    "subcategory": "Science Fiction",
+    "price": 17.39,
+    "originalPrice": 28.99,
+    "discountPercentage": 40,
+    "rating": 4.9,
+    "reviewCount": 115200,
+    "isPrime": true,
+    "isBestSeller": true,
+    "isAmazonChoice": false,
+    "stock": 64,
+    "inStock": true,
+    "thumbnail": "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=800&auto=format&fit=crop&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=800&auto=format&fit=crop&q=80"
+    ],
+    "description": "From the author of The Martian, a lone astronaut must save the earth from disaster in this incredible new science-based interstellar adventure.",
+    "features": [
+      "#1 New York Times Bestseller",
+      "Winner of the Audie Award for Audiobook of the Year",
+      "Gripping interstellar survival story filled with scientific ingenuity",
+      "Beloved by critics and readers worldwide"
+    ],
+    "specifications": {
+      "Format": "Hardcover",
+      "Pages": "496 pages",
+      "Language": "English",
+      "Publisher": "Ballantine Books",
+      "Publication Date": "May 4, 2021"
+    },
+    "badgeText": "#1 Best Seller in Hard Science Fiction"
+  },
+  {
+    "id": "prod-book-004",
+    "asin": "0857197681",
+    "title": "The Psychology of Money: Timeless lessons on wealth, greed, and happiness - Paperback by Morgan Housel",
+    "brand": "Harriman House",
+    "category": "Books",
+    "subcategory": "Personal Finance",
+    "price": 12.99,
+    "originalPrice": 19.99,
+    "discountPercentage": 35,
+    "rating": 4.7,
+    "reviewCount": 58900,
+    "isPrime": true,
+    "isBestSeller": false,
+    "isAmazonChoice": true,
+    "stock": 48,
+    "inStock": true,
+    "thumbnail": "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=800&auto=format&fit=crop&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=800&auto=format&fit=crop&q=80"
+    ],
+    "description": "Doing well with money isn’t necessarily about what you know. It’s about how you behave. And behavior is hard to teach, even to really smart people. Money—investing, personal finance, and business decisions—is typically taught as a math-based field, but Morgan Housel shares 19 short stories exploring the strange ways people think about money.",
+    "features": [
+      "International bestseller translated into over 50 languages",
+      "19 captivating short stories analyzing financial decisions",
+      "Key insights on how ego, pride, and psychology govern financial outcomes",
+      "Practical wisdom for long-term investing and wealth preservation"
+    ],
+    "specifications": {
+      "Format": "Paperback",
+      "Pages": "256 pages",
+      "Language": "English",
+      "Publisher": "Harriman House",
+      "Publication Date": "September 8, 2020"
+    },
+    "badgeText": "Amazon's Choice in Money Management"
+  },
+  {
+    "id": "prod-book-005",
+    "asin": "1449373321",
+    "title": "Designing Data-Intensive Applications: The Big Ideas Behind Reliable, Scalable, and Maintainable Systems - Paperback by Martin Kleppmann",
+    "brand": "O'Reilly Media",
+    "category": "Books",
+    "subcategory": "System Architecture",
+    "price": 38.99,
+    "originalPrice": 54.99,
+    "discountPercentage": 29,
+    "rating": 4.8,
+    "reviewCount": 7820,
+    "isPrime": true,
+    "isBestSeller": true,
+    "isAmazonChoice": false,
+    "stock": 26,
+    "inStock": true,
+    "thumbnail": "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=800&auto=format&fit=crop&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=800&auto=format&fit=crop&q=80"
+    ],
+    "description": "Data is at the center of many challenges in system design today. Difficult issues need to be figured out, such as scalability, consistency, reliability, efficiency, and maintainability. In this practical and comprehensive guide, author Martin Kleppmann helps you navigate this diverse landscape.",
+    "features": [
+      "Definitive guide to modern distributed systems and database architectures",
+      "Deep dive into storage engines, indexing, replication, partitioning, and transactions",
+      "Compare relational, document, graph, and stream processing architectures",
+      "Packed with real-world architectural trade-offs and battle-tested patterns"
+    ],
+    "specifications": {
+      "Format": "Paperback",
+      "Pages": "616 pages",
+      "Language": "English",
+      "Publisher": "O'Reilly Media",
+      "Publication Date": "May 2, 2017"
+    },
+    "badgeText": "#1 Best Seller in Distributed Systems"
+  },
+  {
+    "id": "prod-home-001",
+    "asin": "B07FDJMC9Q",
+    "title": "Ninja AF101 Air Fryer that Crisps, Roasts, Reheats, & Dehydrates, for Quick, Easy Meals, 4 Quart Capacity, High Gloss Finish - Grey",
+    "brand": "Ninja",
+    "category": "Home",
+    "subcategory": "Kitchen Appliances",
+    "price": 89.95,
+    "originalPrice": 129.99,
+    "discountPercentage": 31,
+    "rating": 4.7,
+    "reviewCount": 68900,
+    "isPrime": true,
+    "isBestSeller": true,
+    "isAmazonChoice": false,
+    "stock": 38,
+    "inStock": true,
+    "thumbnail": "https://images.unsplash.com/photo-1585515320310-259814833e62?w=800&auto=format&fit=crop&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1585515320310-259814833e62?w=800&auto=format&fit=crop&q=80"
+    ],
+    "description": "Now you can enjoy guilt-free fried food. The Ninja Air Fryer crisps and roasts your family's favorite foods with up to 75% less fat than traditional frying methods.",
+    "features": [
+      "LESS FAT: Up to 75 percent less fat than traditional frying methods",
+      "WIDE TEMPERATURE RANGE: 105°F to 400°F allows you to gently remove moisture from foods or cook and crisp",
+      "4-QUART CERAMIC-COATED BASKET: Fits 2 lbs of French fries",
+      "4 PROGRAMMABLE COOKING FUNCTIONS: Air Fry, Roast, Reheat, and Dehydrate",
+      "EASY TO CLEAN: Dishwasher-safe basket and crisper plate"
+    ],
+    "specifications": {
+      "Capacity": "4 Quarts",
+      "Color": "Grey",
+      "Wattage": "1500 watts",
+      "Item Weight": "10.58 Pounds",
+      "Dimensions": "13.6 x 11 x 13.3 inches"
+    },
+    "badgeText": "#1 Best Seller in Air Fryers"
+  },
+  {
+    "id": "prod-home-002",
+    "asin": "B01N12U2T6",
+    "title": "Nespresso VertuoPlus Coffee and Espresso Machine by De'Longhi, Single Serve Coffee Maker, Matte Black",
+    "brand": "Nespresso",
+    "category": "Home",
+    "subcategory": "Coffee & Tea",
+    "price": 149.00,
+    "originalPrice": 199.95,
+    "discountPercentage": 25,
+    "rating": 4.6,
+    "reviewCount": 21400,
+    "isPrime": true,
+    "isBestSeller": false,
+    "isAmazonChoice": true,
+    "stock": 22,
+    "inStock": true,
+    "thumbnail": "https://images.unsplash.com/photo-1517668808822-9ebb02ae2a0e?w=800&auto=format&fit=crop&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1517668808822-9ebb02ae2a0e?w=800&auto=format&fit=crop&q=80"
+    ],
+    "description": "Nespresso VertuoPlus offers the latest innovation from Nespresso with an all-new design and colors to deliver the ultimate brewing experience. Creates both authentic Espresso and delicious freshly brewed Coffee.",
+    "features": [
+      "BARISTA GRADE: Brew single-serve coffee or espresso cups at the touch of a button",
+      "VERSATILE BREW SIZES: Brew 5 oz, 8 oz coffee, and single & double espresso",
+      "CENTRIFUSION TECHNOLOGY: Gently spins capsules up to 7,000 RPM to blend ground coffee with water",
+      "FAST HEAT UP: Heats in just 20-25 seconds with motorized brew head and movable 60 oz water tank"
+    ],
+    "specifications": {
+      "Water Tank Capacity": "60 Fluid Ounces",
+      "Operation Mode": "Fully Automatic",
+      "Color": "Matte Black",
+      "Special Feature": "Removable Water Tank, Auto Shut-Off"
+    },
+    "badgeText": "Amazon's Choice in Espresso Machines"
+  },
+  {
+    "id": "prod-home-003",
+    "asin": "B00005NCWN",
+    "title": "Le Creuset Enameled Cast Iron Signature Round Dutch Oven, 5.5 Qt., Cerise (Cherry Red)",
+    "brand": "Le Creuset",
+    "category": "Home",
+    "subcategory": "Cookware",
+    "price": 349.95,
+    "originalPrice": 419.95,
+    "discountPercentage": 17,
+    "rating": 4.9,
+    "reviewCount": 11300,
+    "isPrime": true,
+    "isBestSeller": false,
+    "isAmazonChoice": false,
+    "stock": 12,
+    "inStock": true,
+    "thumbnail": "https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?w=800&auto=format&fit=crop&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?w=800&auto=format&fit=crop&q=80"
+    ],
+    "description": "The iconic Le Creuset Dutch oven is indispensable in the kitchens of home cooks and professional chefs alike. Expertly crafted from enameled cast iron, the everyday versatility of the Dutch oven makes it ideal for everything from slow-cooking and braising to roasting, baking, frying and more.",
+    "features": [
+      "Enameled cast iron delivers superior heat distribution and heat retention",
+      "Ready to use, requires no seasoning",
+      "Easy-to-clean and durable enamel resists dulling, staining, chipping and cracking",
+      "Tight-fitting lid is specially designed to circulate steam and return moisture back to the food",
+      "Compatible with all cooktops and oven-safe up to 500°F"
+    ],
+    "specifications": {
+      "Material": "Enameled Cast Iron",
+      "Capacity": "5.5 Quarts",
+      "Color": "Cerise (Cherry Red)",
+      "Oven Safe": "Up to 500°F"
+    },
+    "badgeText": "Top Rated Luxury Cookware"
+  },
+  {
+    "id": "prod-home-004",
+    "asin": "B0892B1H5K",
+    "title": "Dyson V11 Cordless Stick Vacuum Cleaner, Powerful Suction with Digital Motor, Nickel/Blue",
+    "brand": "Dyson",
+    "category": "Home",
+    "subcategory": "Vacuums",
+    "price": 499.00,
+    "originalPrice": 629.99,
+    "discountPercentage": 21,
+    "rating": 4.6,
+    "reviewCount": 14750,
+    "isPrime": true,
+    "isBestSeller": true,
+    "isAmazonChoice": false,
+    "stock": 19,
+    "inStock": true,
+    "thumbnail": "https://images.unsplash.com/photo-1558317374-067fb5f30001?w=800&auto=format&fit=crop&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1558317374-067fb5f30001?w=800&auto=format&fit=crop&q=80"
+    ],
+    "description": "Engineered for whole-home, deep cleaning. Suction power, run time and tools designed to deeply clean your whole home. Intelligently optimizes suction and run time across all floor types.",
+    "features": [
+      "Dyson technology helps create a cleaner, healthier home with whole-machine filtration",
+      "Intelligently optimizes suction and run time across all floor types with Dynamic Load Sensor",
+      "LCD screen displays run time countdown to the second and maintenance alerts",
+      "Up to 60 minutes of fade-free run time in Eco mode",
+      "Transforms to a handheld vacuum for stairs, cars, and upholstery"
+    ],
+    "specifications": {
+      "Form Factor": "Stick / Handheld",
+      "Run Time": "Up to 60 minutes",
+      "Filtration": "Whole-machine advanced filtration (99.99% to 0.3 microns)",
+      "Weight": "6.68 lbs"
+    },
+    "badgeText": "#1 Best Seller in Stick Vacuums"
+  },
+  {
+    "id": "prod-home-005",
+    "asin": "B07T1CH2HH",
+    "title": "COSORI Electric Gooseneck Kettle with 5 Variable Presets, Pour-Over Kettle & Coffee Pot, 100% Stainless Steel Inner Lid & Bottom - Matte Black",
+    "brand": "COSORI",
+    "category": "Home",
+    "subcategory": "Kitchen Appliances",
+    "price": 59.49,
+    "originalPrice": 69.99,
+    "discountPercentage": 15,
+    "rating": 4.7,
+    "reviewCount": 27800,
+    "isPrime": true,
+    "isBestSeller": false,
+    "isAmazonChoice": true,
+    "stock": 45,
+    "inStock": true,
+    "thumbnail": "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=800&auto=format&fit=crop&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=800&auto=format&fit=crop&q=80"
+    ],
+    "description": "Experience barista-quality coffee brewing right at home with precise temperature presets, steady gooseneck pour spout, and 100% food-grade stainless steel construction.",
+    "features": [
+      "5 PRECISE TEMPERATURE PRESETS: Perfect heat for green tea, oolong, white tea, coffee, and black tea",
+      "RAPID BOIL: 1200W heating boils full kettle in just 3-5 minutes",
+      "PRECISION POUR: Slender gooseneck spout provides controlled water flow at a steady 90° angle",
+      "60-MINUTE KEEP WARM: Automatically keeps water hot at selected temperature for up to an hour",
+      "FOOD GRADE 304 STAINLESS STEEL: Zero plastic touches your hot water"
+    ],
+    "specifications": {
+      "Capacity": "0.8 Liters",
+      "Material": "Food Grade 304 Stainless Steel",
+      "Wattage": "1200 Watts",
+      "Color": "Matte Black"
+    },
+    "badgeText": "Amazon's Choice in Pour-Over Kettles"
+  },
+  {
+    "id": "prod-fash-001",
+    "asin": "B0018OI2MI",
+    "title": "Levi's Men's 511 Slim Fit Jeans - Clean Dark Wash Denim with Comfort Stretch",
+    "brand": "Levi's",
+    "category": "Fashion",
+    "subcategory": "Men's Clothing",
+    "price": 49.99,
+    "originalPrice": 69.50,
+    "discountPercentage": 28,
+    "rating": 4.5,
+    "reviewCount": 54200,
+    "isPrime": true,
+    "isBestSeller": true,
+    "isAmazonChoice": false,
+    "stock": 70,
+    "inStock": true,
+    "thumbnail": "https://images.unsplash.com/photo-1542272604-787c3835535d?w=800&auto=format&fit=crop&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1542272604-787c3835535d?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=800&auto=format&fit=crop&q=80"
+    ],
+    "description": "A modern slim with room to move, the 511 Slim Fit Jeans are a classic since right now. These jeans sit below the waist with a slim leg from hip to ankle.",
+    "features": [
+      "99% Cotton, 1% Elastane with Levi's Flex stretch technology",
+      "Zip fly with button closure and 5-pocket styling",
+      "Slim from hip to ankle for a modern tailored silhouette",
+      "Sits below the waist for comfortable all-day wear",
+      "Machine washable with reinforced rivets"
+    ],
+    "specifications": {
+      "Material": "99% Cotton, 1% Elastane",
+      "Fit": "Slim Fit",
+      "Closure": "Zip fly with button closure",
+      "Care Instructions": "Machine Wash Cold"
+    },
+    "badgeText": "#1 Best Seller in Men's Jeans"
+  },
+  {
+    "id": "prod-fash-002",
+    "asin": "B000GLPFE6",
+    "title": "Ray-Ban Classic Polarized Aviator Sunglasses RB3025 - Gold Frame with Green Classic G-15 Lenses",
+    "brand": "Ray-Ban",
+    "category": "Fashion",
+    "subcategory": "Accessories",
+    "price": 169.00,
+    "originalPrice": 221.00,
+    "discountPercentage": 24,
+    "rating": 4.6,
+    "reviewCount": 16300,
+    "isPrime": true,
+    "isBestSeller": false,
+    "isAmazonChoice": true,
+    "stock": 31,
+    "inStock": true,
+    "thumbnail": "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=800&auto=format&fit=crop&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=800&auto=format&fit=crop&q=80"
+    ],
+    "description": "Originally designed for U.S. aviators in 1937, Ray-Ban RB3025 Aviator sunglasses have become one of the most iconic sunglass models in the world. Timeless quality combined with exceptional performance and comfort.",
+    "features": [
+      "100% UV PROTECTION: Polarized lenses block 99% of reflected glare",
+      "ICONIC AVIATOR FRAME: Lightweight and durable metal frame in classic gold",
+      "CRYSTAL LENSES: Scratch-resistant glass lenses deliver true color perception",
+      "INCLUDES CASE & CLEANING CLOTH: Protective case and microfiber cloth included",
+      "Made in Italy with timeless craftsmanship"
+    ],
+    "specifications": {
+      "Frame Material": "Metal",
+      "Lens Material": "Crystal Polarized Glass",
+      "Lens Width": "58 Millimeters",
+      "Bridge Width": "14 Millimeters"
+    },
+    "badgeText": "Amazon's Choice in Men's Sunglasses"
+  },
+  {
+    "id": "prod-fash-003",
+    "asin": "B0058YG4TC",
+    "title": "Columbia Women's Benton Springs Full Zip Fleece Jacket - Soft Featherweight Fleece with Stand-Up Collar",
+    "brand": "Columbia",
+    "category": "Fashion",
+    "subcategory": "Women's Clothing",
+    "price": 44.99,
+    "originalPrice": 60.00,
+    "discountPercentage": 25,
+    "rating": 4.6,
+    "reviewCount": 49800,
+    "isPrime": true,
+    "isBestSeller": true,
+    "isAmazonChoice": false,
+    "stock": 58,
+    "inStock": true,
+    "thumbnail": "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800&auto=format&fit=crop&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800&auto=format&fit=crop&q=80"
+    ],
+    "description": "An updated Columbia classic, this cozy fleece offers instant insulation in a versatile, everyday style with a new, more active slim cut so that you can achieve maximum mobility.",
+    "features": [
+      "SOFT FLEECE: Crafted of deep 250g MTR filament fleece for ultimate warmth",
+      "COLLAR UP OR DOWN: Stand-up collar protects against cold drafts",
+      "HANDY POCKETS: Two side zippered security pockets keep small items secure",
+      "CLASSIC FIT: A modern classic fit with interior drawcord adjustable hem"
+    ],
+    "specifications": {
+      "Material": "100% Polyester MTR Filament Fleece",
+      "Closure": "Full Zip",
+      "Fit": "Classic Regular Fit",
+      "Care": "Machine Washable"
+    },
+    "badgeText": "#1 Best Seller in Women's Fleece Jackets"
+  },
+  {
+    "id": "prod-fash-004",
+    "asin": "B01H57Q98Y",
+    "title": "Champion Powerblend Fleece Hoodie, Unisex Pullover Sweatshirt with Iconic 'C' Patch Logo",
+    "brand": "Champion",
+    "category": "Fashion",
+    "subcategory": "Activewear",
+    "price": 32.50,
+    "originalPrice": 50.00,
+    "discountPercentage": 35,
+    "rating": 4.7,
+    "reviewCount": 38600,
+    "isPrime": true,
+    "isBestSeller": false,
+    "isAmazonChoice": true,
+    "stock": 95,
+    "inStock": true,
+    "thumbnail": "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=800&auto=format&fit=crop&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=800&auto=format&fit=crop&q=80"
+    ],
+    "description": "Warmth without the weight. The Champion Powerblend Hoodie is made with extra stitch details for durability, a double-layer hood with metal grommets, and soft cotton-poly blend that resists pilling and shrinkage.",
+    "features": [
+      "MIDWEIGHT WARMTH: 9 oz. cotton/polyester fleece is brushed inside for added softness",
+      "REDUCED PILLING & SHRINKAGE: Special wash finish keeps shape wash after wash",
+      "ICONIC C LOGO: Signature embroidered C patch on left wrist",
+      "FRONT KANGAROO POCKET: Warm your hands and keep essentials close",
+      "DOUBLE-LINED HOOD: With metal grommets and dyed-to-match drawcord"
+    ],
+    "specifications": {
+      "Material": "50% Cotton, 50% Polyester",
+      "Fabric Weight": "9 oz Midweight Fleece",
+      "Fit": "Standard Athletic Fit",
+      "Origin": "Imported"
+    },
+    "badgeText": "Amazon's Choice in Men's Sweatshirts"
+  },
+  {
+    "id": "prod-fash-005",
+    "asin": "B008AXT1Q2",
+    "title": "Fossil Men's Grant Stainless Steel Quartz Chronograph Watch with Genuine Roman Numerals - Brown Leather Strap",
+    "brand": "Fossil",
+    "category": "Fashion",
+    "subcategory": "Watches",
+    "price": 84.99,
+    "originalPrice": 160.00,
+    "discountPercentage": 47,
+    "rating": 4.6,
+    "reviewCount": 21800,
+    "isPrime": true,
+    "isBestSeller": false,
+    "isAmazonChoice": false,
+    "stock": 25,
+    "inStock": true,
+    "thumbnail": "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&auto=format&fit=crop&q=80"
+    ],
+    "description": "Modeled after vintage clocks, our Grant collection has a timeless appeal. Roman numerals and sub-dials give this watch a tailored, classic aesthetic that transitions effortlessly from office to weekend.",
+    "features": [
+      "VINTAGE-INSPIRED DESIGN: 44mm round stainless steel case with blue/cream dial and Roman numerals",
+      "CHRONOGRAPH MOVEMENT: Three sub-eyes tracking 24 hours, minutes, and seconds",
+      "INTERCHANGEABLE STRAP: 22mm genuine rich brown leather band with buckle closure",
+      "WATER RESISTANT TO 50M (165ft): Suitable for short periods of recreational swimming"
+    ],
+    "specifications": {
+      "Case Diameter": "44 Millimeters",
+      "Band Material": "Genuine Calfskin Leather",
+      "Movement": "Quartz Chronograph",
+      "Water Resistance": "50 Meters (5 ATM)"
+    },
+    "badgeText": "Great Deal - Save 47%"
+  },
+  {
+    "id": "prod-elec-006",
+    "asin": "B0B8C8Q6J4",
+    "title": "Anker 737 Power Bank (PowerCore 24K), 24,000mAh 3-Port Portable Charger with 140W Output, Smart Digital Display",
+    "brand": "Anker",
+    "category": "Electronics",
+    "subcategory": "Mobile Accessories",
+    "price": 99.99,
+    "originalPrice": 149.99,
+    "discountPercentage": 33,
+    "rating": 4.7,
+    "reviewCount": 11200,
+    "isPrime": true,
+    "isBestSeller": true,
+    "isAmazonChoice": false,
+    "stock": 30,
+    "inStock": true,
+    "thumbnail": "https://images.unsplash.com/photo-1609592424368-f9b964951475?w=800&auto=format&fit=crop&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1609592424368-f9b964951475?w=800&auto=format&fit=crop&q=80"
+    ],
+    "description": "Equipped with the latest Power Delivery 3.1 and bi-directional technology to quickly recharge the portable charger or get a 140W ultra-powerful charge.",
+    "features": [
+      "Ultra-Powerful Two-Way Charging with Power Delivery 3.1",
+      "High Capacity 24,000mAh battery charges an iPhone 13 almost 5 times or MacBook Air once",
+      "Smart Digital Display shows output and input power, battery health, and estimated recharge time",
+      "Charge 3 devices simultaneously with 2 USB-C and 1 USB-A ports",
+      "GaNPrime system for intelligent temperature monitoring and heat reduction"
+    ],
+    "specifications": {
+      "Capacity": "24,000 mAh",
+      "Total Wattage": "140W Max",
+      "Number of Ports": "2 USB-C, 1 USB-A",
+      "Weight": "630 grams"
+    },
+    "badgeText": "#1 Best Seller in Laptop Portable Chargers"
+  }
+]
