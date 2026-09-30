@@ -1,0 +1,11 @@
+{
+  "capture-turn": {
+    "Stop": [
+      {
+        "type": "command",
+        "command": "if [ -f ./.agents/capture-turn.sh ]; then bash ./.agents/capture-turn.sh; elif [ -f ./capture-turn.sh ]; then bash ./capture-turn.sh; else bash /home/lybace/amazon-clone/.agents/capture-turn.sh; fi",
+        "timeout": 10
+      }
+    ]
+  }
+}
