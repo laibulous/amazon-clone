@@ -23,8 +23,26 @@ export function useProducts(initialParams: ProductFilterParams = {}, initialPage
   }, [params, page]);
 
   useEffect(() => {
-    fetchProducts();
-  }, [fetchProducts]);
+    let ignore = false;
+    productsApi
+      .getProducts(params, page)
+      .then((response) => {
+        if (!ignore) {
+          setData(response);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (!ignore) {
+          setError(err instanceof Error ? err : new Error('Failed to fetch products'));
+          setLoading(false);
+        }
+      });
+
+    return () => {
+      ignore = true;
+    };
+  }, [params, page]);
 
   return {
     products: data?.items ?? [],
