@@ -1,19 +1,21 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import {
   CheckCircle2,
   Lock,
-  ChevronLeft,
+  ArrowLeft,
   Truck,
   CreditCard,
-  MapPin,
-  PackageCheck,
   ShoppingBag,
+  ShieldCheck,
+  Check,
 } from 'lucide-react';
 import { useCartStore } from '../store/useCartStore';
+import { useUserStore } from '../store/useUserStore';
 import { formatCurrency, getEstimatedDelivery } from '../utils/formatters';
 
 export const CheckoutPage: React.FC = () => {
+  const user = useUserStore((state) => state.user);
   const items = useCartStore((state) => state.items);
   const clearCart = useCartStore((state) => state.clearCart);
   const getSummary = useCartStore((state) => state.getSummary);
@@ -22,10 +24,42 @@ export const CheckoutPage: React.FC = () => {
   const [orderNumber, setOrderNumber] = useState<string>('');
   const [placedSummary, setPlacedSummary] = useState(getSummary());
 
+  // Form states for Shipping Details
+  const [shipping, setShipping] = useState({
+    fullName: user?.name || 'Laiba Khan',
+    email: user?.email || 'laiba@example.com',
+    phone: '(555) 019-2834',
+    street: '742 Evergreen Terrace',
+    apt: 'Suite 4B',
+    city: 'Seattle',
+    state: 'WA',
+    zipCode: '98101',
+  });
+
+  // Form states for Mock Payment Details
+  const [payment, setPayment] = useState({
+    cardNumber: '4242 •••• •••• 4242',
+    cardName: user?.name || 'Laiba Khan',
+    expiry: '12 / 28',
+    cvv: '842',
+  });
+
+  const [deliveryMethod, setDeliveryMethod] = useState<'free' | 'express'>('free');
+
+  // 5. If the cart is empty, immediately redirect back to homepage (unless order just placed)
+  if (items.length === 0 && !orderPlaced) {
+    return <Navigate to="/" replace />;
+  }
+
+  // Protected route check: if user is null, redirect to /login
+  if (!user && !orderPlaced) {
+    return <Navigate to="/login" state={{ from: '/checkout' }} replace />;
+  }
+
   const summary = orderPlaced ? placedSummary : getSummary();
 
-  const handlePlaceOrder = () => {
-    // Generate a random Amazon-style order ID
+  const handlePlaceOrder = (e: React.FormEvent) => {
+    e.preventDefault();
     const randomOrderId = `114-${Math.floor(1000000 + Math.random() * 9000000)}-${Math.floor(1000000 + Math.random() * 9000000)}`;
     setPlacedSummary(getSummary());
     setOrderNumber(randomOrderId);
@@ -34,40 +68,47 @@ export const CheckoutPage: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // 1. Success Message View after placing order
+  // Order Success Screen
   if (orderPlaced) {
     return (
-      <div className="max-w-3xl mx-auto px-4 py-12">
-        <div className="bg-white rounded-lg border border-gray-200 p-8 shadow-sm text-center">
-          <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
+      <div className="max-w-2xl mx-auto px-4 py-16 text-center animate-in fade-in duration-300">
+        <div className="bg-white rounded-3xl border border-gray-200/90 p-8 sm:p-10 shadow-sm">
+          <div className="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-5 ring-8 ring-emerald-50/50">
             <CheckCircle2 className="w-10 h-10" />
           </div>
 
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-            Order Placed, thank you!
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-2">
+            Order Confirmed!
           </h1>
           <p className="text-sm text-gray-600 mb-1">
-            Confirmation has been sent to <strong className="text-gray-900">jane.doe@example.com</strong>
+            Thank you, <strong className="text-gray-900">{shipping.fullName}</strong>. Your order has been placed successfully.
           </p>
           <p className="text-xs text-gray-500 mb-6">
-            Order #: <span className="font-mono font-semibold text-gray-800">{orderNumber}</span>
+            Order Number: <span className="font-mono font-bold text-gray-900">{orderNumber}</span>
           </p>
 
-          <div className="bg-gray-50 rounded-lg p-5 border border-gray-200 max-w-md mx-auto mb-8 text-left space-y-2">
-            <div className="flex items-center gap-2 text-sm font-semibold text-gray-800">
+          <div className="bg-gray-50/80 rounded-2xl p-5 border border-gray-100 text-left space-y-3 mb-8">
+            <div className="flex items-center gap-2 text-sm font-semibold text-gray-900 pb-2 border-b border-gray-200/60">
               <Truck className="w-4 h-4 text-emerald-600" />
-              <span>Guaranteed Delivery: {getEstimatedDelivery(true)}</span>
+              <span>Estimated Delivery: {getEstimatedDelivery(true)}</span>
             </div>
-            <div className="text-xs text-gray-600 space-y-1">
-              <p>Shipping to: <strong>Jane Doe, 742 Evergreen Terrace, Seattle, WA</strong></p>
-              <p>Items Ordered: <strong>{placedSummary.itemsCount}</strong></p>
-              <p>Total Charged: <strong>{formatCurrency(placedSummary.total)}</strong></p>
+            <div className="grid grid-cols-2 gap-4 text-xs text-gray-600">
+              <div>
+                <span className="text-gray-400 block mb-0.5">Shipping to:</span>
+                <p className="font-medium text-gray-900">{shipping.street}</p>
+                <p>{shipping.city}, {shipping.state} {shipping.zipCode}</p>
+              </div>
+              <div>
+                <span className="text-gray-400 block mb-0.5">Payment:</span>
+                <p className="font-medium text-gray-900">Visa ending in 4242</p>
+                <p className="text-emerald-700 font-medium">Total Paid: {formatCurrency(placedSummary.total)}</p>
+              </div>
             </div>
           </div>
 
           <Link
             to="/"
-            className="inline-flex items-center gap-2 bg-[#ffd814] hover:bg-[#f7ca00] text-gray-900 font-bold px-8 py-3 rounded-full text-sm border border-[#fcd200] shadow-sm transition-colors"
+            className="inline-flex items-center gap-2 bg-gray-900 hover:bg-black text-white font-semibold px-8 py-3.5 rounded-full text-sm shadow-sm transition-all cursor-pointer active:scale-95"
           >
             <ShoppingBag className="w-4 h-4" />
             Continue Shopping
@@ -77,110 +118,313 @@ export const CheckoutPage: React.FC = () => {
     );
   }
 
-  // 2. Empty Cart Check
-  if (items.length === 0) {
-    return (
-      <div className="max-w-2xl mx-auto px-4 py-16 text-center">
-        <div className="bg-white rounded-lg border border-gray-200 p-8 shadow-sm">
-          <ShoppingBag className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-          <h2 className="text-xl font-bold text-gray-900 mb-2">
-            Your Cart is currently empty
-          </h2>
-          <p className="text-xs text-gray-500 mb-6">
-            There are no items in your cart to proceed with checkout.
-          </p>
-          <Link
-            to="/"
-            className="inline-flex items-center gap-1.5 bg-[#ffd814] hover:bg-[#f7ca00] text-gray-900 font-bold px-6 py-2.5 rounded-full text-xs shadow-xs"
-          >
-            <ChevronLeft className="w-4 h-4" />
-            Return to Store
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
-  // 3. Main Checkout Flow View
+  // 2. Main Two-Column Consolidated High-Conversion Page
   return (
-    <div className="max-w-6xl w-full mx-auto px-4 py-6">
-      {/* Checkout Sub-header */}
-      <div className="flex items-center justify-between pb-4 border-b border-gray-300 mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Checkout</h1>
-          <p className="text-xs text-gray-500">
-            Review your order details and delivery preferences.
-          </p>
-        </div>
-
-        <div className="flex items-center gap-1 text-xs text-gray-600">
-          <Lock className="w-4 h-4 text-emerald-600" />
-          <span>SSL 256-Bit Encrypted</span>
+    <div className="max-w-[1300px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
+      
+      {/* Return to shop breadcrumb link */}
+      <div className="mb-6 flex items-center justify-between">
+        <Link
+          to="/"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-gray-900 transition-colors"
+        >
+          <ArrowLeft className="w-3.5 h-3.5" />
+          Return to shopping
+        </Link>
+        <div className="flex items-center gap-1.5 text-xs text-gray-500">
+          <ShieldCheck className="w-4 h-4 text-emerald-600" />
+          <span>Frictionless 256-Bit SSL Checkout</span>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
         
-        {/* Left Column: Sections (Address, Payment, Review Items) */}
-        <div className="lg:col-span-8 space-y-6">
+        {/* 3. Left Column: Unified Single-Scroll Form (Shipping & Payment) */}
+        <div className="lg:col-span-7 space-y-8">
           
-          {/* Section 1: Delivery Address */}
-          <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-xs">
-            <div className="flex items-center justify-between mb-3 pb-2 border-b border-gray-100">
-              <h2 className="text-base font-bold text-gray-900 flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-amber-500" />
-                1. Delivery Address
-              </h2>
-              <span className="text-xs text-blue-700 hover:underline cursor-pointer">
-                Change
-              </span>
-            </div>
-            <div className="text-xs text-gray-700 space-y-0.5 pl-6">
-              <p className="font-semibold text-gray-900">Jane Doe</p>
-              <p>742 Evergreen Terrace, Apt 4B</p>
-              <p>Seattle, WA 98101-1234</p>
-              <p className="text-gray-500">Phone: (206) 555-0199</p>
-            </div>
-          </div>
-
-          {/* Section 2: Payment Method */}
-          <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-xs">
-            <div className="flex items-center justify-between mb-3 pb-2 border-b border-gray-100">
-              <h2 className="text-base font-bold text-gray-900 flex items-center gap-2">
-                <CreditCard className="w-4 h-4 text-amber-500" />
-                2. Payment Method
-              </h2>
-              <span className="text-xs text-blue-700 hover:underline cursor-pointer">
-                Change
-              </span>
-            </div>
-            <div className="text-xs text-gray-700 space-y-1 pl-6">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-5 bg-[#1434CB] rounded text-[9px] font-black text-white flex items-center justify-center">
-                  VISA
-                </div>
-                <span className="font-medium text-gray-900">Amazon Prime Rewards Visa ending in 4242</span>
+          <form onSubmit={handlePlaceOrder} id="checkout-form" className="space-y-8">
+            
+            {/* Step 1: Shipping Details */}
+            <div className="bg-white rounded-2xl border border-gray-200/90 p-6 sm:p-7 shadow-xs">
+              <div className="flex items-center gap-2.5 mb-5 pb-3 border-b border-gray-100">
+                <span className="w-6 h-6 rounded-full bg-gray-900 text-white text-xs font-bold flex items-center justify-center shrink-0">
+                  1
+                </span>
+                <h2 className="text-base sm:text-lg font-bold text-gray-900">
+                  Shipping Address
+                </h2>
               </div>
-              <p className="text-gray-500">Billing address: Same as delivery address</p>
-            </div>
-          </div>
 
-          {/* Section 3: Review Items and Delivery */}
-          <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-xs">
-            <div className="flex items-center justify-between mb-3 pb-2 border-b border-gray-100">
-              <h2 className="text-base font-bold text-gray-900 flex items-center gap-2">
-                <PackageCheck className="w-4 h-4 text-amber-500" />
-                3. Review Items and Shipping
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* Full Name */}
+                <div className="sm:col-span-2">
+                  <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={shipping.fullName}
+                    onChange={(e) => setShipping({ ...shipping, fullName: e.target.value })}
+                    placeholder="Jane Doe"
+                    className="w-full py-3 px-4 text-sm text-gray-900 bg-white border border-gray-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition-all shadow-2xs placeholder:text-gray-400"
+                  />
+                </div>
+
+                {/* Email Address */}
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    value={shipping.email}
+                    onChange={(e) => setShipping({ ...shipping, email: e.target.value })}
+                    placeholder="name@example.com"
+                    className="w-full py-3 px-4 text-sm text-gray-900 bg-white border border-gray-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition-all shadow-2xs placeholder:text-gray-400"
+                  />
+                </div>
+
+                {/* Phone Number */}
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                    Phone Number
+                  </label>
+                  <input
+                    type="tel"
+                    required
+                    value={shipping.phone}
+                    onChange={(e) => setShipping({ ...shipping, phone: e.target.value })}
+                    placeholder="(555) 000-0000"
+                    className="w-full py-3 px-4 text-sm text-gray-900 bg-white border border-gray-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition-all shadow-2xs placeholder:text-gray-400"
+                  />
+                </div>
+
+                {/* Street Address */}
+                <div className="sm:col-span-2">
+                  <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                    Street Address
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={shipping.street}
+                    onChange={(e) => setShipping({ ...shipping, street: e.target.value })}
+                    placeholder="123 Main Street"
+                    className="w-full py-3 px-4 text-sm text-gray-900 bg-white border border-gray-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition-all shadow-2xs placeholder:text-gray-400"
+                  />
+                </div>
+
+                {/* Apt / Suite */}
+                <div className="sm:col-span-2">
+                  <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                    Apartment, suite, unit (optional)
+                  </label>
+                  <input
+                    type="text"
+                    value={shipping.apt}
+                    onChange={(e) => setShipping({ ...shipping, apt: e.target.value })}
+                    placeholder="Apt 4B"
+                    className="w-full py-3 px-4 text-sm text-gray-900 bg-white border border-gray-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition-all shadow-2xs placeholder:text-gray-400"
+                  />
+                </div>
+
+                {/* City */}
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                    City
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={shipping.city}
+                    onChange={(e) => setShipping({ ...shipping, city: e.target.value })}
+                    placeholder="Seattle"
+                    className="w-full py-3 px-4 text-sm text-gray-900 bg-white border border-gray-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition-all shadow-2xs placeholder:text-gray-400"
+                  />
+                </div>
+
+                {/* State & ZIP Code */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                      State
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={shipping.state}
+                      onChange={(e) => setShipping({ ...shipping, state: e.target.value })}
+                      placeholder="WA"
+                      className="w-full py-3 px-4 text-sm text-gray-900 bg-white border border-gray-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition-all shadow-2xs placeholder:text-gray-400"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                      ZIP Code
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={shipping.zipCode}
+                      onChange={(e) => setShipping({ ...shipping, zipCode: e.target.value })}
+                      placeholder="98101"
+                      className="w-full py-3 px-4 text-sm text-gray-900 bg-white border border-gray-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition-all shadow-2xs placeholder:text-gray-400"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Delivery Speed Options */}
+              <div className="mt-5 pt-4 border-t border-gray-100">
+                <label className="block text-xs font-semibold text-gray-700 mb-2">
+                  Delivery Speed
+                </label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div
+                    onClick={() => setDeliveryMethod('free')}
+                    className={`p-3.5 rounded-xl border cursor-pointer transition-all flex items-center justify-between ${
+                      deliveryMethod === 'free'
+                        ? 'border-gray-900 bg-gray-50/80 ring-1 ring-gray-900'
+                        : 'border-gray-200 hover:border-gray-300'
+                    }`}
+                  >
+                    <div>
+                      <p className="text-xs font-bold text-gray-900">FREE Prime Delivery</p>
+                      <p className="text-[11px] text-gray-500">{getEstimatedDelivery(true)}</p>
+                    </div>
+                    {deliveryMethod === 'free' && (
+                      <Check className="w-4 h-4 text-gray-900" />
+                    )}
+                  </div>
+
+                  <div
+                    onClick={() => setDeliveryMethod('express')}
+                    className={`p-3.5 rounded-xl border cursor-pointer transition-all flex items-center justify-between ${
+                      deliveryMethod === 'express'
+                        ? 'border-gray-900 bg-gray-50/80 ring-1 ring-gray-900'
+                        : 'border-gray-200 hover:border-gray-300'
+                    }`}
+                  >
+                    <div>
+                      <p className="text-xs font-bold text-gray-900">Same-Day Rush</p>
+                      <p className="text-[11px] text-gray-500">Today by 9 PM ($9.99)</p>
+                    </div>
+                    {deliveryMethod === 'express' && (
+                      <Check className="w-4 h-4 text-gray-900" />
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Step 2: Mock Payment Details */}
+            <div className="bg-white rounded-2xl border border-gray-200/90 p-6 sm:p-7 shadow-xs">
+              <div className="flex items-center justify-between mb-5 pb-3 border-b border-gray-100">
+                <div className="flex items-center gap-2.5">
+                  <span className="w-6 h-6 rounded-full bg-gray-900 text-white text-xs font-bold flex items-center justify-center shrink-0">
+                    2
+                  </span>
+                  <h2 className="text-base sm:text-lg font-bold text-gray-900">
+                    Payment Details
+                  </h2>
+                </div>
+                <div className="flex items-center gap-1 text-[11px] text-gray-500 font-medium">
+                  <Lock className="w-3.5 h-3.5 text-gray-400" />
+                  <span>Encrypted</span>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                {/* Card Number */}
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                    Card Number
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      required
+                      value={payment.cardNumber}
+                      onChange={(e) => setPayment({ ...payment, cardNumber: e.target.value })}
+                      placeholder="4242 •••• •••• 4242"
+                      className="w-full py-3 pl-4 pr-12 text-sm text-gray-900 bg-white border border-gray-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition-all shadow-2xs font-mono placeholder:text-gray-400"
+                    />
+                    <CreditCard className="w-5 h-5 text-gray-400 absolute right-4 top-3.5" />
+                  </div>
+                </div>
+
+                {/* Name on Card */}
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                    Name on Card
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={payment.cardName}
+                    onChange={(e) => setPayment({ ...payment, cardName: e.target.value })}
+                    placeholder="Laiba Khan"
+                    className="w-full py-3 px-4 text-sm text-gray-900 bg-white border border-gray-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition-all shadow-2xs placeholder:text-gray-400"
+                  />
+                </div>
+
+                {/* Expiry & CVV */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                      Expiry Date
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={payment.expiry}
+                      onChange={(e) => setPayment({ ...payment, expiry: e.target.value })}
+                      placeholder="MM / YY"
+                      className="w-full py-3 px-4 text-sm text-gray-900 bg-white border border-gray-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition-all shadow-2xs placeholder:text-gray-400 text-center"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                      Security Code (CVV)
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      maxLength={4}
+                      value={payment.cvv}
+                      onChange={(e) => setPayment({ ...payment, cvv: e.target.value })}
+                      placeholder="123"
+                      className="w-full py-3 px-4 text-sm text-gray-900 bg-white border border-gray-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition-all shadow-2xs placeholder:text-gray-400 text-center font-mono"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </form>
+        </div>
+
+        {/* 4. Right Column: Sticky "Order Summary" Card */}
+        <div className="lg:col-span-5">
+          <div className="sticky top-24 bg-white rounded-2xl border border-gray-200/90 p-6 sm:p-7 shadow-xs space-y-6">
+            
+            {/* Header */}
+            <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+              <h2 className="text-base sm:text-lg font-bold text-gray-900">
+                Order Summary
               </h2>
-              <span className="text-xs font-semibold text-emerald-700">
-                Guaranteed: {getEstimatedDelivery(true)}
+              <span className="text-xs font-semibold text-gray-500 bg-gray-100 px-2.5 py-0.5 rounded-full">
+                {summary.itemsCount} {summary.itemsCount === 1 ? 'item' : 'items'}
               </span>
             </div>
 
-            <div className="divide-y divide-gray-100">
+            {/* Cart Items Preview List */}
+            <div className="max-h-60 overflow-y-auto divide-y divide-gray-100 pr-1 space-y-3">
               {items.map(({ product, quantity }) => (
-                <div key={product.id} className="py-3.5 flex gap-4">
-                  <div className="w-16 h-16 bg-gray-50 rounded border border-gray-200 p-1 flex items-center justify-center shrink-0">
+                <div key={product.id} className="pt-3 first:pt-0 flex items-center gap-3.5">
+                  <div className="w-14 h-14 bg-gray-50/80 rounded-xl border border-gray-100 p-1 flex items-center justify-center shrink-0">
                     <img
                       src={product.thumbnail}
                       alt={product.title}
@@ -188,77 +432,72 @@ export const CheckoutPage: React.FC = () => {
                     />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-xs font-bold text-gray-900 line-clamp-1">
+                    <h3 className="text-xs font-semibold text-gray-900 truncate">
                       {product.title}
                     </h3>
-                    <p className="text-xs text-gray-500 mt-0.5">
-                      Quantity: <strong className="text-gray-800">{quantity}</strong> · {product.brand}
+                    <p className="text-[11px] text-gray-500 mt-0.5">
+                      Quantity: <strong className="text-gray-800">{quantity}</strong>
                     </p>
-                    <div className="flex items-center gap-2 mt-1">
-                      <span className="text-xs font-bold text-gray-900">
-                        {formatCurrency(product.price * quantity)}
-                      </span>
-                      {quantity > 1 && (
-                        <span className="text-[11px] text-gray-500">
-                          ({formatCurrency(product.price)} each)
-                        </span>
-                      )}
-                    </div>
+                  </div>
+                  <div className="text-xs font-bold text-gray-900 shrink-0">
+                    {formatCurrency(product.price * quantity)}
                   </div>
                 </div>
               ))}
             </div>
-          </div>
-        </div>
 
-        {/* Right Column: Order Summary Box */}
-        <div className="lg:col-span-4">
-          <div className="bg-white rounded-lg border border-gray-300 p-5 shadow-xs sticky top-20 space-y-4">
-            
-            {/* Mock Place Your Order Button */}
-            <button
-              type="button"
-              onClick={handlePlaceOrder}
-              className="w-full bg-[#ffd814] hover:bg-[#f7ca00] active:bg-[#f0b800] text-gray-900 font-bold py-3 px-4 rounded-full text-sm border border-[#fcd200] shadow-sm cursor-pointer transition-colors"
-            >
-              Place your order
-            </button>
+            {/* Financial Breakdown */}
+            <div className="pt-3 border-t border-gray-100 space-y-2.5 text-xs text-gray-600">
+              <div className="flex justify-between">
+                <span>Items Subtotal:</span>
+                <span className="text-gray-900 font-medium">{formatCurrency(summary.subtotal)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Shipping & Handling:</span>
+                <span className="text-emerald-700 font-semibold">
+                  {deliveryMethod === 'express' ? '$9.99' : 'FREE'}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span>Estimated Tax:</span>
+                <span className="text-gray-900 font-medium">{formatCurrency(summary.estimatedTax)}</span>
+              </div>
+              {summary.savings > 0 && (
+                <div className="flex justify-between text-emerald-700 font-semibold">
+                  <span>Savings:</span>
+                  <span>-{formatCurrency(summary.savings)}</span>
+                </div>
+              )}
 
-            <p className="text-[11px] text-gray-500 text-center leading-tight">
-              By placing your order, you agree to Amazon Clone's privacy notice and conditions of use.
-            </p>
-
-            <div className="pt-3 border-t border-gray-200">
-              <h3 className="text-sm font-bold text-gray-900 mb-3">Order Summary</h3>
-              <div className="text-xs text-gray-700 space-y-2">
-                <div className="flex justify-between">
-                  <span>Items ({summary.itemsCount}):</span>
-                  <span>{formatCurrency(summary.subtotal)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Shipping & handling:</span>
-                  <span>{summary.shipping === 0 ? 'FREE' : formatCurrency(summary.shipping)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Estimated tax:</span>
-                  <span>{formatCurrency(summary.estimatedTax)}</span>
-                </div>
-                {summary.savings > 0 && (
-                  <div className="flex justify-between text-emerald-700 font-medium">
-                    <span>Total Savings:</span>
-                    <span>-{formatCurrency(summary.savings)}</span>
-                  </div>
-                )}
-                <div className="pt-2 border-t border-gray-200 flex justify-between text-base font-extrabold text-red-700">
-                  <span>Order Total:</span>
-                  <span>{formatCurrency(summary.total)}</span>
-                </div>
+              {/* Order Total Line */}
+              <div className="pt-3 border-t border-gray-200/80 flex items-baseline justify-between">
+                <span className="text-sm font-bold text-gray-900">Order Total:</span>
+                <span className="text-xl font-extrabold text-gray-950">
+                  {formatCurrency(
+                    deliveryMethod === 'express' ? summary.total + 9.99 : summary.total
+                  )}
+                </span>
               </div>
             </div>
 
-            <div className="bg-gray-50 rounded p-2.5 text-[11px] text-gray-600 border border-gray-200">
-              <span className="font-semibold text-gray-800">Prime Benefits:</span> Free Two-Day or Next-Day Shipping applied to all eligible items.
-            </div>
+            {/* High-Contrast Large Place Order Button */}
+            <button
+              type="submit"
+              form="checkout-form"
+              className="w-full bg-gray-900 hover:bg-black active:bg-gray-800 text-white text-base font-bold py-4 px-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-200 active:scale-[0.99] flex items-center justify-center gap-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
+            >
+              <Lock className="w-4 h-4 text-emerald-400" />
+              <span>
+                Place Order · {formatCurrency(
+                  deliveryMethod === 'express' ? summary.total + 9.99 : summary.total
+                )}
+              </span>
+            </button>
+
+            {/* Frictionless Guarantee Footer */}
+            <p className="text-[11px] text-gray-400 text-center leading-tight">
+              By clicking Place Order, your mock order will be processed immediately. Free 30-day returns on all items.
+            </p>
           </div>
         </div>
 

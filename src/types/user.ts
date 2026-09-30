@@ -11,11 +11,11 @@ export interface DeliveryAddress {
 }
 
 export interface User {
-  id: string;
   name: string;
-  email: string;
-  isLoggedIn: boolean;
   isPrimeMember: boolean;
+  id?: string;
+  email?: string;
+  isLoggedIn?: boolean;
   selectedAddress?: DeliveryAddress;
-  savedAddresses: DeliveryAddress[];
+  savedAddresses?: DeliveryAddress[];
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { Header } from './components/layout';
 import { CartDrawer } from './components/cart';
-import { HomePage, ProductDetailPage, CheckoutPage } from './pages';
+import { HomePage, ProductDetailPage, CheckoutPage, LoginPage } from './pages';
 
 function AppContent() {
   const navigate = useNavigate();
@@ -15,28 +15,15 @@ function AppContent() {
     }
   };
 
-  const handleSelectCategory = () => {
-    if (location.pathname !== '/') {
-      navigate('/');
-    }
-  };
-
   return (
     <div className="min-h-screen bg-[#eaeded] text-[#0f1111] flex flex-col font-sans">
       {/* 
-        Amazon-style Persistent Header:
-        - Logo (links to /)
-        - Deliver to location
-        - Functional search bar connected to useFilterStore
-        - Functional category dropdown connected to useFilterStore
-        - Returns & Orders
-        - Cart icon with dynamic count from useCartStore (opens CartDrawer)
+        Modernized Minimalist Header:
+        - Clean translucent glassmorphism background
+        - Sleek pill-shaped centered search with ⌘K shortcut hint
+        - Minimalist cart icon with notification dot & simple Sign In
       */}
-      <Header
-        deliveryLocation="New York 10001"
-        onSelectCategory={handleSelectCategory}
-        onSearchSubmit={handleSearchSubmit}
-      />
+      <Header onSearchSubmit={handleSearchSubmit} />
 
       {/* Sliding Shopping Cart Drawer */}
       <CartDrawer />
@@ -52,6 +39,9 @@ function AppContent() {
 
           {/* Checkout Page */}
           <Route path="/checkout" element={<CheckoutPage />} />
+
+          {/* Mock Login Page */}
+          <Route path="/login" element={<LoginPage />} />
         </Routes>
       </main>
 
