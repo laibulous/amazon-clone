@@ -248,9 +248,9 @@
     "isAmazonChoice": true,
     "stock": 35,
     "inStock": true,
-    "thumbnail": "https://images.unsplash.com/photo-1532012164546-f432f2e3777a?w=800&auto=format&fit=crop&q=80",
+    "thumbnail": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=800&auto=format&fit=crop&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1532012164546-f432f2e3777a?w=800&auto=format&fit=crop&q=80"
+      "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=800&auto=format&fit=crop&q=80"
     ],
     "description": "Even bad code can function. But if code isn't clean, it can bring a development organization to its knees. Every year, countless hours and significant resources are lost because of poorly written code. Clean Code is divided into three parts: principles, patterns, and practices of writing clean code.",
     "features": [
@@ -435,9 +435,9 @@
     "isAmazonChoice": true,
     "stock": 22,
     "inStock": true,
-    "thumbnail": "https://images.unsplash.com/photo-1517668808822-9ebb02ae2a0e?w=800&auto=format&fit=crop&q=80",
+    "thumbnail": "https://images.unsplash.com/photo-1558317374-067fb5f30001?w=800&auto=format&fit=crop&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1517668808822-9ebb02ae2a0e?w=800&auto=format&fit=crop&q=80"
+      "https://images.unsplash.com/photo-1558317374-067fb5f30001?w=800&auto=format&fit=crop&q=80"
     ],
     "description": "Nespresso VertuoPlus offers the latest innovation from Nespresso with an all-new design and colors to deliver the ultimate brewing experience. Creates both authentic Espresso and delicious freshly brewed Coffee.",
     "features": [
@@ -767,9 +767,9 @@
     "isAmazonChoice": false,
     "stock": 30,
     "inStock": true,
-    "thumbnail": "https://images.unsplash.com/photo-1609592424368-f9b964951475?w=800&auto=format&fit=crop&q=80",
+    "thumbnail": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=800&auto=format&fit=crop&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1609592424368-f9b964951475?w=800&auto=format&fit=crop&q=80"
+      "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=800&auto=format&fit=crop&q=80"
     ],
     "description": "Equipped with the latest Power Delivery 3.1 and bi-directional technology to quickly recharge the portable charger or get a 140W ultra-powerful charge.",
     "features": [
