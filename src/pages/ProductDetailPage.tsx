@@ -9,6 +9,7 @@ import {
   RotateCcw,
   ShoppingBag,
   Zap,
+  TrendingDown,
 } from 'lucide-react';
 import productsData from '../data/products.json';
 import type { Product } from '../types/product';
@@ -16,7 +17,7 @@ import {
   splitPrice,
   formatCurrency,
   formatReviewCount,
-  getEstimatedDelivery,
+  getDeliveryDatePlusTwo,
 } from '../utils/formatters';
 import { useCartStore } from '../store/useCartStore';
 import { ReviewSummary } from '../components/product';
@@ -184,8 +185,8 @@ const ProductView: React.FC<ProductViewProps> = ({ product }) => {
           </div>
 
           {/* Price & Value Block */}
-          <div className="space-y-1.5 pb-5 border-b border-gray-100">
-            <div className="flex items-baseline gap-3">
+          <div className="space-y-2 pb-5 border-b border-gray-100">
+            <div className="flex items-baseline gap-3 flex-wrap">
               <div className="flex items-start text-gray-950 font-extrabold">
                 <span className="text-lg font-bold pt-1 mr-0.5">$</span>
                 <span className="text-4xl sm:text-5xl font-extrabold tracking-tight leading-none">
@@ -199,13 +200,19 @@ const ProductView: React.FC<ProductViewProps> = ({ product }) => {
                   {formatCurrency(product.originalPrice)}
                 </div>
               )}
+
+              {/* 2. Price Trust Badge: "Good time to buy" with downward trend icon */}
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/90 shadow-2xs">
+                <TrendingDown className="w-3.5 h-3.5 text-emerald-600 stroke-[2.5]" />
+                <span>Good time to buy</span>
+              </div>
             </div>
 
-            {/* Delivery Estimation */}
-            <div className="flex items-center gap-2 text-xs text-gray-600 pt-1">
+            {/* 1. Dynamic Delivery Estimator (Delivery Certainty) */}
+            <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-700 pt-1">
               <Truck className="w-4 h-4 text-emerald-600 shrink-0" />
               <span>
-                FREE delivery <strong className="text-gray-900">{getEstimatedDelivery(product.isPrime)}</strong>
+                Order now, arrives by <strong className="text-gray-900 font-bold">{getDeliveryDatePlusTwo()}</strong>
               </span>
             </div>
           </div>

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Star } from 'lucide-react';
+import { Star, Truck } from 'lucide-react';
 import type { Product } from '../../types/product';
-import { splitPrice, formatReviewCount } from '../../utils/formatters';
+import { splitPrice, formatReviewCount, getDeliveryDatePlusTwo } from '../../utils/formatters';
 import { useCartStore } from '../../store/useCartStore';
 
 export interface ProductCardProps {
@@ -129,7 +129,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
         {/* Sleek SVG / Minimalist Pill Tag for Prime */}
         {product.isPrime ? (
-          <div className="min-h-5 mb-3 flex items-center gap-2">
+          <div className="min-h-5 mb-2 flex items-center gap-2">
             <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-sky-50 text-sky-800 border border-sky-100/90 tracking-wide">
               {/* Sleek Prime SVG Checkmark */}
               <svg
@@ -145,13 +145,21 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               </svg>
               <span>prime</span>
             </span>
-            <span className="text-xs text-gray-500">Free Next-Day</span>
+            <span className="text-xs text-gray-500">Free Two-Day</span>
           </div>
         ) : (
-          <div className="min-h-5 mb-3 flex items-center">
+          <div className="min-h-5 mb-2 flex items-center">
             <span className="text-xs text-gray-500">Standard Delivery</span>
           </div>
         )}
+
+        {/* Dynamic Delivery Estimator (Delivery Certainty) */}
+        <div className="flex items-center gap-1.5 text-xs text-gray-600 mb-3">
+          <Truck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+          <span className="truncate">
+            Order now, arrives by <strong className="text-gray-900">{getDeliveryDatePlusTwo()}</strong>
+          </span>
+        </div>
       </div>
 
       {/* Modern Add to Cart Button */}

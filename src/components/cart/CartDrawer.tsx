@@ -8,6 +8,7 @@ import {
   Trash2,
   CheckCircle2,
   Lock,
+  ShieldCheck,
 } from 'lucide-react';
 import { useCartStore } from '../../store/useCartStore';
 import { formatCurrency } from '../../utils/formatters';
@@ -241,50 +242,85 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
           )}
         </div>
 
-        {/* Drawer Footer: Dynamic Instant Subtotal Calculator */}
-        {items.length > 0 && (
-          <div className="bg-gray-50/60 px-6 py-4 border-t border-gray-100 shrink-0 space-y-3">
-            {/* Instant Dynamic Subtotal Line */}
-            <div className="flex items-baseline justify-between text-gray-900">
-              <span className="text-sm font-medium text-gray-600">
-                Subtotal ({summary.itemsCount} {summary.itemsCount === 1 ? 'item' : 'items'}):
-              </span>
-              <span className="text-xl font-bold text-gray-900">
-                {formatCurrency(summary.subtotal)}
-              </span>
-            </div>
+        {/* Drawer Footer: "All-in Pricing" Breakdown (Prevents Sticker Shock) */}
+        {items.length > 0 && (() => {
+          const subtotal = summary.subtotal;
+          const estimatedTax = Number((subtotal * 0.08).toFixed(2));
+          const allInTotal = Number((subtotal + estimatedTax).toFixed(2));
 
-            {/* Savings Display if available */}
-            {summary.savings > 0 && (
-              <div className="flex items-center justify-between text-xs text-emerald-700 font-semibold bg-emerald-50 px-2.5 py-1.5 rounded-lg border border-emerald-100">
-                <span>Total Savings:</span>
-                <span>-{formatCurrency(summary.savings)}</span>
+          return (
+            <div className="bg-gray-50/80 px-6 py-4 border-t border-gray-100 shrink-0 space-y-3.5">
+              {/* All-in Pricing Breakdown Card */}
+              <div className="bg-white rounded-xl p-3.5 border border-gray-200/80 shadow-2xs space-y-2 text-xs">
+                <div className="flex items-center justify-between text-[11px] font-bold text-gray-500 uppercase tracking-wider pb-1.5 border-b border-gray-100">
+                  <span>All-in Pricing</span>
+                  <span className="text-emerald-700 font-semibold normal-case">No surprises at checkout</span>
+                </div>
+
+                {/* Subtotal */}
+                <div className="flex justify-between text-gray-600">
+                  <span>Subtotal ({summary.itemsCount} {summary.itemsCount === 1 ? 'item' : 'items'}):</span>
+                  <span className="text-gray-900 font-medium">{formatCurrency(subtotal)}</span>
+                </div>
+
+                {/* Shipping: Free (highlighted in green) */}
+                <div className="flex justify-between items-center text-gray-600">
+                  <span>Shipping:</span>
+                  <span className="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200/60">
+                    Free
+                  </span>
+                </div>
+
+                {/* Estimated Tax (flat 8% of subtotal) */}
+                <div className="flex justify-between text-gray-600">
+                  <span>Estimated Tax (8%):</span>
+                  <span className="text-gray-900 font-medium">{formatCurrency(estimatedTax)}</span>
+                </div>
+
+                {/* Savings if available */}
+                {summary.savings > 0 && (
+                  <div className="flex justify-between text-emerald-700 font-semibold pt-0.5">
+                    <span>Total Savings:</span>
+                    <span>-{formatCurrency(summary.savings)}</span>
+                  </div>
+                )}
+
+                {/* Total */}
+                <div className="pt-2 border-t border-gray-200 flex items-baseline justify-between">
+                  <span className="text-sm font-bold text-gray-900">Total:</span>
+                  <span className="text-lg font-extrabold text-gray-950">
+                    {formatCurrency(allInTotal)}
+                  </span>
+                </div>
               </div>
-            )}
 
-            {/* Checkout Action Button */}
-            <button
-              type="button"
-              onClick={handleProceedToCheckout}
-              className="w-full bg-amber-400 hover:bg-amber-500 active:bg-amber-600 text-gray-950 font-bold py-3 px-4 rounded-full text-sm shadow-2xs hover:shadow-xs cursor-pointer transition-all flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-amber-500/50"
-            >
-              <Lock className="w-3.5 h-3.5 text-gray-800" />
-              <span>Proceed to Checkout · {formatCurrency(summary.subtotal)}</span>
-            </button>
-
-            {/* Clear Cart Action */}
-            <div className="flex justify-between items-center pt-1 text-[11px] text-gray-400">
-              <span>Instant drawer checkout</span>
+              {/* Checkout Action Button */}
               <button
                 type="button"
-                onClick={clearCart}
-                className="hover:text-red-600 hover:underline cursor-pointer"
+                onClick={handleProceedToCheckout}
+                className="w-full bg-amber-400 hover:bg-amber-500 active:bg-amber-600 text-gray-950 font-bold py-3.5 px-4 rounded-full text-sm shadow-2xs hover:shadow-xs cursor-pointer transition-all flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-amber-500/50"
               >
-                Clear cart
+                <Lock className="w-3.5 h-3.5 text-gray-800" />
+                <span>Proceed to Checkout · {formatCurrency(allInTotal)}</span>
               </button>
+
+              {/* Clear Cart & Trust Indicator */}
+              <div className="flex justify-between items-center pt-0.5 text-[11px] text-gray-400">
+                <span className="flex items-center gap-1">
+                  <ShieldCheck className="w-3 h-3 text-emerald-600" />
+                  <span>Price Transparency Guaranteed</span>
+                </span>
+                <button
+                  type="button"
+                  onClick={clearCart}
+                  className="hover:text-red-600 hover:underline cursor-pointer"
+                >
+                  Clear cart
+                </button>
+              </div>
             </div>
-          </div>
-        )}
+          );
+        })()}
       </div>
     </div>
   );

@@ -41,3 +41,19 @@ export const getEstimatedDelivery = (isPrime: boolean = true): string => {
   };
   return date.toLocaleDateString('en-US', options);
 };
+
+/**
+ * Calculates dynamic delivery estimate (Current Date + 2 Days) using native JS Date methods
+ * Formats cleanly as e.g. "Friday, Oct 2"
+ */
+export const getDeliveryDatePlusTwo = (): string => {
+  const date = new Date();
+  date.setDate(date.getDate() + 2);
+
+  const options: Intl.DateTimeFormatOptions = {
+    weekday: 'long',
+    month: 'short',
+    day: 'numeric',
+  };
+  return date.toLocaleDateString('en-US', options);
+};
