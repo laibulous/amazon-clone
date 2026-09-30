@@ -10,6 +10,7 @@ import {
   X,
 } from 'lucide-react';
 import { useCartStore } from '../../store/useCartStore';
+import { useFilterStore } from '../../store/useFilterStore';
 
 export interface HeaderProps {
   cartCount?: number;
@@ -27,10 +28,10 @@ export const Header: React.FC<HeaderProps> = ({
   cartCount,
   onCartClick,
   deliveryLocation = 'New York 10001',
-  categories = ['All Departments', 'Electronics', 'Books', 'Home', 'Fashion'],
-  selectedCategory = 'All Departments',
+  categories = ['All', 'Electronics', 'Books', 'Home', 'Fashion'],
+  selectedCategory,
   onSelectCategory,
-  searchQuery = '',
+  searchQuery,
   onSearchChange,
   onSearchSubmit,
 }) => {
@@ -38,8 +39,14 @@ export const Header: React.FC<HeaderProps> = ({
   const openCart = useCartStore((state) => state.openCart);
   const displayCartCount = cartCount !== undefined ? cartCount : storeTotalCount;
 
-  const [internalQuery, setInternalQuery] = useState(searchQuery);
-  const [internalCategory, setInternalCategory] = useState(selectedCategory);
+  const storeQuery = useFilterStore((state) => state.searchQuery);
+  const storeCategory = useFilterStore((state) => state.selectedCategory);
+  const storeSetSearchQuery = useFilterStore((state) => state.setSearchQuery);
+  const storeSetSelectedCategory = useFilterStore((state) => state.setSelectedCategory);
+
+  const activeQuery = searchQuery !== undefined ? searchQuery : storeQuery;
+  const activeCategory = selectedCategory !== undefined ? selectedCategory : storeCategory;
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleCartClick = (e: React.MouseEvent) => {
@@ -52,14 +59,14 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInternalQuery(e.target.value);
+    storeSetSearchQuery(e.target.value);
     if (onSearchChange) {
       onSearchChange(e.target.value);
     }
   };
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setInternalCategory(e.target.value);
+    storeSetSelectedCategory(e.target.value);
     if (onSelectCategory) {
       onSelectCategory(e.target.value);
     }
@@ -130,14 +137,14 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Category Dropdown */}
           <div className="relative h-full bg-gray-100 hover:bg-gray-200 border-r border-gray-300 shrink-0 transition-colors flex items-center">
             <select
-              value={internalCategory}
+              value={activeCategory}
               onChange={handleCategoryChange}
               className="h-full pl-2.5 pr-7 text-xs text-gray-800 bg-transparent cursor-pointer outline-none appearance-none font-medium"
               aria-label="Select Search Category"
             >
               {categories.map((cat) => (
                 <option key={cat} value={cat} className="text-gray-900 bg-white">
-                  {cat}
+                  {cat === 'All' ? 'All Departments' : cat}
                 </option>
               ))}
             </select>
@@ -147,7 +154,7 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Search Input */}
           <input
             type="text"
-            value={internalQuery}
+            value={activeQuery}
             onChange={handleQueryChange}
             placeholder="Search Amazon"
             className="flex-1 w-full h-full px-3 text-sm text-gray-900 bg-white placeholder-gray-500 outline-none"

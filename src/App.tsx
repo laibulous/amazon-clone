@@ -1,33 +1,21 @@
-import React, { useState, useMemo } from 'react';
+import React from 'react';
 import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { Header } from './components/layout';
 import { CartDrawer } from './components/cart';
 import { HomePage, ProductDetailPage, CheckoutPage } from './pages';
-import productsData from './data/products.json';
-import type { Product } from './types/product';
-
-const typedProducts = productsData as unknown as Product[];
 
 function AppContent() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [selectedCategory, setSelectedCategory] = useState<string>('All Departments');
-  const [searchQuery, setSearchQuery] = useState<string>('');
-
-  const categories = useMemo(() => {
-    return ['All Departments', ...Array.from(new Set(typedProducts.map((p) => p.category)))];
-  }, []);
-
-  const handleSelectCategory = (cat: string) => {
-    setSelectedCategory(cat);
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     if (location.pathname !== '/') {
       navigate('/');
     }
   };
 
-  const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSelectCategory = () => {
     if (location.pathname !== '/') {
       navigate('/');
     }
@@ -37,19 +25,16 @@ function AppContent() {
     <div className="min-h-screen bg-[#eaeded] text-[#0f1111] flex flex-col font-sans">
       {/* 
         Amazon-style Persistent Header:
-        1. Placeholder logo on far left (links to /)
-        2. Delivery location section
-        3. Central search bar with category dropdown + search button
-        4. Returns & Orders block
-        5. Cart icon with dynamic count reading from Zustand store (opens CartDrawer)
+        - Logo (links to /)
+        - Deliver to location
+        - Functional search bar connected to useFilterStore
+        - Functional category dropdown connected to useFilterStore
+        - Returns & Orders
+        - Cart icon with dynamic count from useCartStore (opens CartDrawer)
       */}
       <Header
         deliveryLocation="New York 10001"
-        categories={categories}
-        selectedCategory={selectedCategory}
         onSelectCategory={handleSelectCategory}
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
         onSearchSubmit={handleSearchSubmit}
       />
 
@@ -59,18 +44,8 @@ function AppContent() {
       {/* Main Content Router */}
       <main className="flex-1">
         <Routes>
-          {/* Homepage (Product Feed) */}
-          <Route
-            path="/"
-            element={
-              <HomePage
-                selectedCategory={selectedCategory}
-                setSelectedCategory={setSelectedCategory}
-                searchQuery={searchQuery}
-                categories={categories}
-              />
-            }
-          />
+          {/* Homepage with dynamic filterable product grid */}
+          <Route path="/" element={<HomePage />} />
 
           {/* Product Detail Page (PDP) */}
           <Route path="/product/:id" element={<ProductDetailPage />} />

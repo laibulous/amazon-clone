@@ -1,42 +1,20 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Sparkles, Tag, ShieldCheck } from 'lucide-react';
 import { ProductGrid } from '../components/product';
-import productsData from '../data/products.json';
-import type { Product } from '../types/product';
-
-const typedProducts = productsData as unknown as Product[];
+import { useFilterStore } from '../store/useFilterStore';
 
 export interface HomePageProps {
-  selectedCategory: string;
-  setSelectedCategory: (category: string) => void;
-  searchQuery: string;
-  categories: string[];
+  categories?: string[];
 }
 
+const defaultCategories = ['All', 'Electronics', 'Books', 'Home', 'Fashion'];
+
 export const HomePage: React.FC<HomePageProps> = ({
-  selectedCategory,
-  setSelectedCategory,
-  searchQuery,
-  categories,
+  categories = defaultCategories,
 }) => {
-  // Filter products based on search query and category
-  const filteredProducts = useMemo(() => {
-    return typedProducts.filter((product) => {
-      const matchesCategory =
-        selectedCategory === 'All Departments' ||
-        product.category.toLowerCase() === selectedCategory.toLowerCase();
-
-      const q = searchQuery.toLowerCase().trim();
-      const matchesQuery =
-        !q ||
-        product.title.toLowerCase().includes(q) ||
-        product.brand.toLowerCase().includes(q) ||
-        product.subcategory.toLowerCase().includes(q) ||
-        product.description.toLowerCase().includes(q);
-
-      return matchesCategory && matchesQuery;
-    });
-  }, [selectedCategory, searchQuery]);
+  const selectedCategory = useFilterStore((state) => state.selectedCategory);
+  const setSelectedCategory = useFilterStore((state) => state.setSelectedCategory);
+  const searchQuery = useFilterStore((state) => state.searchQuery);
 
   return (
     <div className="max-w-[1500px] w-full mx-auto px-4 py-4 md:py-6">
@@ -65,12 +43,12 @@ export const HomePage: React.FC<HomePageProps> = ({
                 type="button"
                 onClick={() => setSelectedCategory(cat)}
                 className={`text-xs px-3 py-1 rounded-full transition-colors cursor-pointer border ${
-                  selectedCategory === cat
+                  selectedCategory === cat || (cat === 'All' && (selectedCategory === 'All' || selectedCategory === 'All Departments'))
                     ? 'bg-amber-400 text-gray-900 font-bold border-amber-400'
                     : 'bg-white/10 hover:bg-white/20 text-gray-200 border-white/20'
                 }`}
               >
-                {cat}
+                {cat === 'All' ? 'All Departments' : cat}
               </button>
             ))}
           </div>
@@ -81,12 +59,14 @@ export const HomePage: React.FC<HomePageProps> = ({
       <div className="flex flex-wrap items-center justify-between gap-2 mb-4 pb-2 border-b border-gray-300">
         <div>
           <h2 className="text-lg md:text-xl font-bold text-gray-900">
-            {selectedCategory === 'All Departments'
+            {searchQuery.trim()
+              ? `Results for "${searchQuery.trim()}"`
+              : selectedCategory === 'All' || selectedCategory === 'All Departments'
               ? 'Featured Products & Deals'
               : `${selectedCategory} Collection`}
           </h2>
           <p className="text-xs text-gray-500">
-            Showing {filteredProducts.length} of {typedProducts.length} items
+            Browse our catalog with real-time title search and category filtering
           </p>
         </div>
 
@@ -98,8 +78,8 @@ export const HomePage: React.FC<HomePageProps> = ({
         </div>
       </div>
 
-      {/* Product Grid */}
-      <ProductGrid products={filteredProducts} />
+      {/* Product Grid (filters data internally via useFilterStore and renders empty state if zero matches) */}
+      <ProductGrid />
     </div>
   );
 };
