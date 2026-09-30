@@ -1,6 +1,6 @@
 import React from 'react';
 import { Sparkles, Tag, ShieldCheck } from 'lucide-react';
-import { ProductGrid } from '../components/product';
+import { ProductGrid, SmartIntentChips } from '../components/product';
 import { useFilterStore } from '../store/useFilterStore';
 
 export interface HomePageProps {
@@ -9,17 +9,28 @@ export interface HomePageProps {
 
 const defaultCategories = ['All', 'Electronics', 'Books', 'Home', 'Fashion'];
 
+const intentTitles: Record<string, string> = {
+  'gifts-under-50': 'Curated Gifts Under $50',
+  'tech-upgrades': 'Top Tech Upgrades & Electronics',
+  'highly-rated': 'Customer Favorites: Highly Rated (4.5+ ★)',
+  'big-savings': 'Big Savings: 20%+ Off Deals',
+};
+
 export const HomePage: React.FC<HomePageProps> = ({
   categories = defaultCategories,
 }) => {
   const selectedCategory = useFilterStore((state) => state.selectedCategory);
   const setSelectedCategory = useFilterStore((state) => state.setSelectedCategory);
   const searchQuery = useFilterStore((state) => state.searchQuery);
+  const selectedIntent = useFilterStore((state) => state.selectedIntent);
 
   return (
-    <div className="max-w-[1500px] w-full mx-auto px-4 py-4 md:py-6">
+    <div className="max-w-[1500px] w-full mx-auto px-4 py-2 md:py-4">
+      {/* 1. Smart Intent Chips: Right below the Header */}
+      <SmartIntentChips />
+
       {/* Amazon Hero Banner & Category Pills */}
-      <div className="relative mb-6 rounded-md overflow-hidden bg-gradient-to-r from-[#232f3e] via-[#1a2430] to-[#131921] text-white p-6 md:p-8 shadow-sm">
+      <div className="relative mb-6 rounded-2xl overflow-hidden bg-gradient-to-r from-[#232f3e] via-[#1a2430] to-[#131921] text-white p-6 md:p-8 shadow-sm">
         <div className="max-w-2xl">
           <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-400/20 text-amber-300 border border-amber-400/30 mb-3">
             <Sparkles className="w-3.5 h-3.5 text-amber-400" />
@@ -56,17 +67,21 @@ export const HomePage: React.FC<HomePageProps> = ({
       </div>
 
       {/* Section Header */}
-      <div className="flex flex-wrap items-center justify-between gap-2 mb-4 pb-2 border-b border-gray-300">
+      <div className="flex flex-wrap items-center justify-between gap-2 mb-4 pb-2 border-b border-gray-200">
         <div>
           <h2 className="text-lg md:text-xl font-bold text-gray-900">
-            {searchQuery.trim()
+            {selectedIntent
+              ? intentTitles[selectedIntent] || 'Curated Intent Selection'
+              : searchQuery.trim()
               ? `Results for "${searchQuery.trim()}"`
               : selectedCategory === 'All' || selectedCategory === 'All Departments'
               ? 'Featured Products & Deals'
               : `${selectedCategory} Collection`}
           </h2>
           <p className="text-xs text-gray-500">
-            Browse our catalog with real-time title search and category filtering
+            {selectedIntent
+              ? 'Filtered by smart shopping intent for faster discovery'
+              : 'Browse our catalog with real-time title search and category filtering'}
           </p>
         </div>
 

@@ -11,6 +11,7 @@ export interface ProductGridProps {
   products?: Product[];
   searchQuery?: string;
   selectedCategory?: string;
+  selectedIntent?: string | null;
   onAddToCart?: (product: Product) => void;
 }
 
@@ -18,19 +19,41 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
   products = allProducts,
   searchQuery: propQuery,
   selectedCategory: propCategory,
+  selectedIntent: propIntent,
   onAddToCart,
 }) => {
   const storeQuery = useFilterStore((state) => state.searchQuery);
   const storeCategory = useFilterStore((state) => state.selectedCategory);
+  const storeIntent = useFilterStore((state) => state.selectedIntent);
   const clearFilters = useFilterStore((state) => state.clearFilters);
 
   const activeQuery = propQuery !== undefined ? propQuery : storeQuery;
   const activeCategory = propCategory !== undefined ? propCategory : storeCategory;
+  const activeIntent = propIntent !== undefined ? propIntent : storeIntent;
 
-  // Filter products: match searchQuery (case-insensitive title match) AND selectedCategory (unless 'All' is selected)
+  // Filter products: match intent filters, search query, and category
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
-      // 1. Category check: unless 'All' is selected (also accepts 'All Departments')
+      // 1. Intent filter check
+      if (activeIntent) {
+        if (activeIntent === 'gifts-under-50' && !(product.price < 50)) {
+          return false;
+        }
+        if (
+          activeIntent === 'tech-upgrades' &&
+          product.category.toLowerCase() !== 'electronics'
+        ) {
+          return false;
+        }
+        if (activeIntent === 'highly-rated' && !(product.rating >= 4.5)) {
+          return false;
+        }
+        if (activeIntent === 'big-savings' && !(product.discountPercentage >= 20)) {
+          return false;
+        }
+      }
+
+      // 2. Category check: unless 'All' is selected
       const isAllCategory =
         !activeCategory ||
         activeCategory === 'All' ||
@@ -40,7 +63,7 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
         isAllCategory ||
         product.category.toLowerCase() === activeCategory.toLowerCase();
 
-      // 2. Search query check: case-insensitive title match
+      // 3. Search query check: case-insensitive title match
       const queryTrimmed = activeQuery.trim().toLowerCase();
       const matchesQuery =
         !queryTrimmed ||
@@ -48,20 +71,31 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
 
       return matchesCategory && matchesQuery;
     });
-  }, [products, activeQuery, activeCategory]);
+  }, [products, activeQuery, activeCategory, activeIntent]);
 
   // Clean empty state when filter returns zero items
   if (filteredProducts.length === 0) {
     const trimmedQuery = activeQuery.trim();
+    let emptyTitle = `No results found for category "${activeCategory}"`;
+    if (trimmedQuery) {
+      emptyTitle = `No results found for "${trimmedQuery}"`;
+    } else if (activeIntent) {
+      const intentNames: Record<string, string> = {
+        'gifts-under-50': 'Gifts under $50',
+        'tech-upgrades': 'Tech Upgrades',
+        'highly-rated': 'Highly Rated',
+        'big-savings': 'Big Savings',
+      };
+      emptyTitle = `No results found for "${intentNames[activeIntent] || activeIntent}"`;
+    }
+
     return (
       <div className="w-full bg-white rounded-lg p-10 md:p-14 text-center border border-gray-200 shadow-sm my-6">
         <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-400">
           <SearchX className="w-8 h-8" />
         </div>
         <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2">
-          {trimmedQuery
-            ? `No results found for "${trimmedQuery}"`
-            : `No results found for category "${activeCategory}"`}
+          {emptyTitle}
         </h3>
         <p className="text-xs sm:text-sm text-gray-500 max-w-md mx-auto mb-6">
           Try checking your spelling, using more general search terms, or clearing your filters to see all available products.
